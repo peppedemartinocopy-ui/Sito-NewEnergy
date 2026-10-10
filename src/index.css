@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 84px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #0f1c14;
+  background: #ffffff;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Reveal on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* Marquee for partners strip */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 40s linear infinite;
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Custom scrollbar (subtle) */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #f1f5f3; }
+::-webkit-scrollbar-thumb { background: #c7d4cc; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #7BC143; }
+
+/* Focus ring for accessibility on interactive elements */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid #7BC143;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Utility: hide scrollbar on carousels */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Gradient text */
+.text-gradient-green {
+  background: linear-gradient(120deg, #5a9e2e 0%, #7BC143 60%, #9fd956 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Banner cookie statico (index.html): visibile solo con JavaScript attivo e nessuna scelta salvata */
+#cookie-banner { display: none; }
+html[data-cc='ask'] #cookie-banner { display: block; }
+
+/* Telefono: i cerchi decorativi sfocati (blur 120px) costano molto da disegnare su iPhone e sono quasi invisibili */
+@media (max-width: 639px) {
+  .blur-\[120px\] { display: none; }
+}

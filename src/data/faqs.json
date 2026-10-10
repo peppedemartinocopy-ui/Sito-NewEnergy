@@ -1,0 +1,70 @@
+[
+  {
+    "q": "Quanto costa un impianto fotovoltaico da 6 kW in Campania?",
+    "a": "Non esiste un prezzo unico: il costo cambia in base al tipo di tetto, alla difficoltà di installazione, alla qualità di pannelli e inverter e alla presenza o meno di un sistema di accumulo. Diffida di chi ti dà una cifra al telefono senza aver visto il tuo tetto. Dopo il sopralluogo ti consegniamo una relazione tecnica scritta con il costo dettagliato voce per voce, e resta tua anche se decidi di non scegliere noi."
+  },
+  {
+    "q": "Quanto tempo ci vuole dall'inizio alla fine?",
+    "a": "Circa 2 settimane dalla firma del contratto. Dentro ci sono la spedizione dei materiali a casa tua e l'installazione, che dura meno di una settimana."
+  },
+  {
+    "q": "Posso scaricare il costo dalle tasse?",
+    "a": "Sì, c'è la detrazione del 50% per la prima casa (36% per le altre abitazioni). Attenzione a come funziona davvero: non è uno sconto immediato, ma un importo che recuperi in dieci rate annuali dalla dichiarazione dei redditi. Serve avere sufficiente IRPEF da recuperare: lo verifichiamo insieme prima di farti qualsiasi conto."
+  },
+  {
+    "q": "Conviene aggiungere le batterie di accumulo?",
+    "a": "Conviene se consumi molta energia la sera, quando i pannelli non producono più. Se invece sei fuori casa tutto il giorno e consumi soprattutto di notte, l'accumulo cambia radicalmente il tuo autoconsumo. Se invece consumi già molto durante il giorno, il vantaggio è minore. È una valutazione che facciamo sui tuoi consumi reali: non lo consigliamo a tutti per principio."
+  },
+  {
+    "q": "Cosa succede se l'impianto si rompe tra qualche anno?",
+    "a": "Il monitoraggio è incluso a vita: controlliamo ogni giorno i dati di produzione dell'impianto dal nostro ufficio e se c'è un'anomalia la individuiamo subito, spesso prima che te ne accorga tu. L'assistenza sul posto è gratuita per i primi 2 anni. Dopo, restiamo comunque il tuo punto di riferimento."
+  },
+  {
+    "q": "In quanti anni si ripaga un impianto fotovoltaico?",
+    "a": "Per un impianto residenziale ben dimensionato, con un buon autoconsumo, il rientro realistico è indicativamente tra i 5 e i 7 anni. Chi ti promette tre anni sta quasi sempre gonfiando i numeri, per esempio sommando la detrazione fiscale al risparmio in bolletta come se fossero la stessa cosa. Sul tuo caso specifico facciamo il conto con i tuoi consumi reali."
+  },
+  {
+    "q": "Quanto durano davvero i pannelli?",
+    "a": "I pannelli che installiamo hanno garanzia di produzione di 25 anni: dopo 25 anni producono ancora almeno l'80-85% della potenza iniziale. Gli inverter hanno garanzia tra 10 e 12 anni, estendibile."
+  },
+  {
+    "q": "E se piove, grandina o nevica?",
+    "a": "I pannelli sono certificati per resistere a grandine di dimensioni standard. Al Sud è molto raro che si verifichino eventi estremi, ma comunque esistono polizze assicurative dedicate che costano circa 100-150 euro all'anno."
+  },
+  {
+    "q": "Serve il permesso del comune?",
+    "a": "Per la maggior parte degli impianti residenziali basta una comunicazione semplificata (CILA), non un permesso edilizio. Nei casi particolari (centri storici, vincoli paesaggistici) servono autorizzazioni specifiche. Se ci occupiamo noi delle pratiche, ce ne facciamo carico completamente."
+  },
+  {
+    "q": "Conviene ancora installare il fotovoltaico nel 2026?",
+    "a": "Sì, per un motivo semplice: l'energia che produci e consumi subito è energia che non paghi al fornitore. Con i prezzi dell'elettricità attuali e la detrazione del 50% per la prima casa (36% per le altre abitazioni), un impianto dimensionato bene continua a ripagarsi. Quello che è cambiato negli anni sono gli incentivi, non la convenienza di fondo: conta molto di più quanta energia riesci ad autoconsumare rispetto a quanta ne immetti in rete."
+  },
+  {
+    "q": "Che differenza c'è tra pannelli di marca e pannelli economici?",
+    "a": "La differenza non si vede il primo giorno, si vede dopo dieci anni. Cambiano il tasso di degrado annuo (quanta potenza perdono col tempo), la qualità delle celle e dei materiali, la solidità della garanzia e soprattutto chi la onora davvero se qualcosa va storto. Noi installiamo pannelli Viessmann e inverter Huawei o SolarEdge perché sono marchi che rispondono ancora tra dieci anni. Un impianto che costa molto meno di solito taglia proprio su questo."
+  },
+  {
+    "q": "Quanto tempo impiega la pratica GSE?",
+    "a": "La connessione alla rete con il distributore richiede in genere qualche settimana dopo la fine dei lavori, e le tempistiche dipendono dall'ente, non da noi. Le pratiche GSE e di allaccio le gestiamo interamente noi: tu non devi presentarti a nessuno sportello."
+  },
+  {
+    "q": "Quanti pannelli servono per una famiglia di 4 persone?",
+    "a": "Dipende dai consumi reali, non dal numero di persone. Per dimensionare bene un impianto guardiamo le bollette degli ultimi 12 mesi e capiamo quanta energia consumi e soprattutto in quali ore. Contano molto anche i consumi futuri: se pensi di mettere una pompa di calore o di comprare un'auto elettrica, l'impianto va dimensionato tenendone conto fin da subito."
+  },
+  {
+    "q": "Quanto si risparmia in bolletta con il fotovoltaico?",
+    "a": "Il risparmio dipende da quanta energia riesci a consumare nel momento in cui la produci (autoconsumo). Più autoconsumi, più risparmi. Vanno tenute distinte tre cose che spesso vengono confuse: il risparmio in bolletta, il guadagno per l'energia immessa in rete e il rimborso fiscale della detrazione. Sono tre voci separate, e sommarle insieme fa sembrare i numeri più belli di quello che sono."
+  },
+  {
+    "q": "Si può installare il fotovoltaico in condominio?",
+    "a": "Sì. Puoi installare un impianto a servizio della tua singola unità sulla porzione di tetto o di lastrico che ti spetta, oppure il condominio può realizzare un impianto comune. Cambiano gli adempimenti e le maggioranze richieste in assemblea. È un caso frequente in città e lo gestiamo abitualmente: durante il sopralluogo ti diciamo esattamente cosa serve nel tuo condominio."
+  },
+  {
+    "q": "Il fotovoltaico produce anche con il cielo nuvoloso?",
+    "a": "Sì, ma meno. I pannelli lavorano con la luce, non con il calore diretto, quindi con il cielo coperto continuano a produrre a potenza ridotta. In Campania l'irraggiamento annuo è tra i migliori d'Italia, e questo pesa parecchio a favore sul rendimento complessivo dell'impianto."
+  },
+  {
+    "q": "Posso ricaricare l'auto elettrica con il fotovoltaico?",
+    "a": "Sì, ed è uno degli usi che rende di più, perché la ricarica è un consumo grande che puoi spostare nelle ore di sole. Se hai già un'auto elettrica o pensi di comprarla, dicci subito: l'impianto e l'eventuale colonnina vanno dimensionati insieme fin dall'inizio, non aggiunti dopo."
+  }
+]

@@ -1,0 +1,7 @@
+# Usato se il sito viene collegato a Netlify tramite questo repository.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
