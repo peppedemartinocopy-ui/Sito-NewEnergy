@@ -51,9 +51,9 @@
       try { storedConsent = localStorage.getItem('cookie_consent') === 'granted' ? 'granted' : 'denied'; } catch (e) {}
       gtag('consent', 'default', {
         'analytics_storage': storedConsent,
-        'ad_storage': 'denied',
-        'ad_user_data': 'denied',
-        'ad_personalization': 'denied'
+        'ad_storage': storedConsent,
+        'ad_user_data': storedConsent,
+        'ad_personalization': storedConsent
       });
       gtag('js', new Date());
       gtag('config', 'G-XBNYY8RQ4N');
@@ -332,7 +332,7 @@
   <body>
     <div id="cookie-banner" class="fixed inset-x-0 bottom-0 z-[60] p-4 sm:p-5">
       <div class="max-w-2xl mx-auto bg-ink-900 text-white rounded-2xl shadow-cardhover border border-white/10 p-5 sm:p-6">
-        <p class="text-sm text-white/80 leading-relaxed">Usiamo Google Analytics per capire come i visitatori usano il sito. Si attiva solo se acconsenti. <a href="/cookie.html" target="_blank" rel="noopener noreferrer" class="underline hover:text-brand-green transition-colors">Leggi la Cookie Policy</a>.</p>
+        <p class="text-sm text-white/80 leading-relaxed">Usiamo Google Analytics per capire come i visitatori usano il sito e cookie di Google Ads per misurare l’efficacia dei nostri annunci. Si attivano solo se acconsenti. <a href="/cookie.html" target="_blank" rel="noopener noreferrer" class="underline hover:text-brand-green transition-colors">Leggi la Cookie Policy</a>.</p>
         <div class="mt-4 flex flex-col sm:flex-row gap-2.5">
           <button type="button" data-cc-choice="granted" class="touch-manipulation flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-brand-green text-white text-sm font-semibold hover:bg-brand-green-dark transition-all">Accetta</button>
           <button type="button" data-cc-choice="denied" class="touch-manipulation flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white/10 text-white text-sm font-semibold hover:bg-white/15 transition-all">Rifiuta</button>
@@ -349,7 +349,7 @@
           var v = t.getAttribute('data-cc-choice');
           b.style.display = 'none';
           try { localStorage.setItem('cookie_consent', v); } catch (err) {}
-          if (v === 'granted' && typeof window.gtag === 'function') window.gtag('consent', 'update', { analytics_storage: 'granted' });
+          if (v === 'granted' && typeof window.gtag === 'function') window.gtag('consent', 'update', { analytics_storage: 'granted', ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted' });
         });
       })();
     </script>
