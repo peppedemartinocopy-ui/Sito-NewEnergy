@@ -1,12 +1,11 @@
 // Lightweight GA4 event helper. Safe no-op if gtag isn't loaded.
-// Google Ads: inserisci l'ID account (es. 'AW-1234567890') e le etichette delle 3 conversioni
-// (Google Ads → Obiettivi → Conversioni → Dettagli → Imposta tag → Installa il tag tu stesso).
-// Finché sono vuoti, il codice non invia nulla a Google Ads e gli eventi GA4 funzionano come prima.
-export const ADS_ID = '';
+// Google Ads: ID account e etichette delle 3 conversioni (Obiettivi → Conversioni → snippet evento).
+// Vengono inviate in parallelo agli eventi GA4, rispettando il consenso scelto nel banner.
+export const ADS_ID = 'AW-17682742461';
 const ADS_LABELS: Record<string, string> = {
-  generate_lead: '',
-  phone_call: '',
-  whatsapp_click: '',
+  generate_lead: 'Ha2oCKHAip0dEL355O9B',
+  phone_call: 'smXmCPTFip0dEL355O9B',
+  whatsapp_click: 'CHVXCPfFip0dEL355O9B',
 };
 
 export function trackEvent(
