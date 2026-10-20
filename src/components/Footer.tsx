@@ -29,7 +29,7 @@ export function Footer() {
               </span>
             </div>
             <p className="mt-4 text-sm leading-relaxed">
-              Installatori di impianti fotovoltaici a Pozzuoli, Napoli e in tutta la Campania.
+              Ditta di impianti fotovoltaici e installatori di pannelli solari a Napoli, Pozzuoli e in tutta la Campania: Caserta, Avellino e Salerno.
               Parli direttamente col titolare.
             </p>
             <div className="mt-5 flex items-center gap-2">

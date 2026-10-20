@@ -38,6 +38,7 @@ const PHOTOS: Photo[] = [
 const VISIBLE = 8;
 
 function GalleryPhoto({ src, wide }: { src: string; wide?: boolean }) {
+  const n = src.match(/galleria-(\d+)/)?.[1] ?? '';
   return (
     <div className="group relative w-full h-full overflow-hidden rounded-2xl bg-ink-900 cursor-pointer">
       <picture>
@@ -45,7 +46,7 @@ function GalleryPhoto({ src, wide }: { src: string; wide?: boolean }) {
         {!wide && <source media="(max-width: 639px)" srcSet={src.replace('.webp', '-m.webp')} />}
         <img
           src={src}
-          alt="Impianto fotovoltaico installato da New Energy"
+          alt={`Impianto fotovoltaico e pannelli solari installati da New Energy in Campania${n ? ` - foto ${Number(n)}` : ''}`}
           loading="lazy"
           decoding="async"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
