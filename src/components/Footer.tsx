@@ -130,7 +130,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50">
-          <p>© {new Date().getFullYear()} New Energy Srl — P.IVA 10491571211 — Tutti i diritti riservati</p>
+          <p>© {new Date().getFullYear()} New Energy Srl — Pozzuoli (NA) — P.IVA 10491571211 — Tutti i diritti riservati</p>
           <div className="flex items-center gap-4">
             <a href="/privacy.html" target="_blank" rel="noopener noreferrer" className="hover:text-brand-green transition-colors">Privacy</a>
             <a href="/cookie.html" target="_blank" rel="noopener noreferrer" className="hover:text-brand-green transition-colors">Cookie Policy</a>
