@@ -2,7 +2,7 @@ import { Phone, MessageCircle, Mail, MapPin, Facebook, Instagram } from 'lucide-
 import { trackPhoneClick, trackWhatsAppClick, trackEvent } from '@/lib/analytics';
 import { PHONE_DISPLAY, PHONE_HREF, WHATSAPP_HREF } from '@/lib/whatsapp';
 
-const FACEBOOK_HREF = 'https://www.facebook.com/profile.php?id=61577339864356';
+const FACEBOOK_HREF = 'https://www.facebook.com/newenergyfotovoltaico/';
 const INSTAGRAM_HREF = 'https://www.instagram.com/newenergyfotovoltaico';
 
 const NAV = [
