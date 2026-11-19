@@ -9,11 +9,11 @@ export function Hero() {
       {/* Background photo of a real installation */}
       <div className="absolute inset-0">
         <img
-          src="/images/hero-v2.webp"
-          srcSet="/images/hero-v2-720.webp 720w, /images/hero-v2.webp 1080w"
+          src="/images/hero-tetto.webp"
+          srcSet="/images/hero-tetto-720.webp 720w, /images/hero-tetto.webp 1080w"
           sizes="100vw"
-          alt="Impianto fotovoltaico installato da New Energy in Campania"
-          className="w-full h-full object-cover object-[center_60%]"
+          alt="Pannelli fotovoltaici su un tetto a tegole"
+          className="w-full h-full object-cover object-[center_45%]"
         />
         {/* Sfumatura: chiara in alto, sempre più scura verso il basso, per far leggere bene i testi */}
         <div

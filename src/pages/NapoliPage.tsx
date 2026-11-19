@@ -49,11 +49,11 @@ export default function NapoliPage() {
         <section id="top" className="relative overflow-hidden bg-ink-900 pt-[72px]">
           <div className="absolute inset-0">
             <img
-              src="/images/hero-napoli.webp"
-              srcSet="/images/hero-napoli-720.webp 720w, /images/hero-napoli.webp 1080w"
+              src="/images/hero-v2.webp"
+              srcSet="/images/hero-v2-720.webp 720w, /images/hero-v2.webp 1080w"
               sizes="100vw"
-              alt="Pannelli fotovoltaici su un tetto a tegole"
-              className="w-full h-full object-cover object-[center_45%]"
+              alt="Impianto fotovoltaico installato da New Energy in Campania"
+              className="w-full h-full object-cover object-[center_60%]"
             />
             <div
               className="absolute inset-0"
