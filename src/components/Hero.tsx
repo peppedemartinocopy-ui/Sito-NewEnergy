@@ -1,6 +1,6 @@
-import { ArrowRight, Phone, MessageCircle, ShieldCheck, MapPin, Star, Zap } from 'lucide-react';
-import { trackPhoneClick, trackWhatsAppClick } from '@/lib/analytics';
-import { PHONE_DISPLAY, PHONE_HREF, WHATSAPP_HREF } from '@/lib/whatsapp';
+import { ArrowRight, MessageCircle, ShieldCheck, MapPin, Star, Zap } from 'lucide-react';
+import { trackWhatsAppClick } from '@/lib/analytics';
+import { WHATSAPP_HREF } from '@/lib/whatsapp';
 
 
 export function Hero() {
@@ -79,10 +79,6 @@ export function Hero() {
               <Zap className="w-4 h-4 text-brand-orange" />
               Installazione in 15 giorni dalla firma
             </div>
-            <a href={PHONE_HREF} onClick={() => trackPhoneClick('hero_trust')} className="flex items-center gap-2 hover:text-white transition-colors">
-              <Phone className="w-4 h-4 text-brand-green" />
-              {PHONE_DISPLAY}
-            </a>
           </div>
         </div>
       </div>
