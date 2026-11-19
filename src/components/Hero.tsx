@@ -1,4 +1,4 @@
-import { ArrowRight, Phone, MessageCircle, ShieldCheck, Star, Zap } from 'lucide-react';
+import { ArrowRight, Phone, MessageCircle, ShieldCheck, MapPin, Star, Zap } from 'lucide-react';
 import { trackPhoneClick, trackWhatsAppClick } from '@/lib/analytics';
 import { PHONE_DISPLAY, PHONE_HREF, WHATSAPP_HREF } from '@/lib/whatsapp';
 
@@ -27,17 +27,22 @@ export function Hero() {
 
       <div className="relative max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-28">
         <div className="max-w-2xl animate-fade-up">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white/90 [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">
-            Installatore fotovoltaico a Napoli e in Campania
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/15 text-white/90 text-xs font-medium">
+            <MapPin className="w-3.5 h-3.5 text-brand-green" />
+            Napoli · Pozzuoli · Caserta · Avellino · Salerno
+          </div>
+
+          <p className="mt-5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-green [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">
+            New Energy Srl · Pozzuoli (NA)
           </p>
 
-          <h1 className="mt-4 text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-white leading-[1.08] [text-shadow:0_2px_20px_rgba(0,0,0,0.6)]">
+          <h1 className="mt-3 text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-white leading-[1.08] [text-shadow:0_2px_20px_rgba(0,0,0,0.6)]">
             Il tuo impianto deve darti tranquillità,{' '}
             <span className="block text-gradient-green mt-1">non preoccupazioni.</span>
           </h1>
 
           <p className="mt-6 text-lg text-white/90 leading-relaxed max-w-xl [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-            Con New Energy hai la certezza del risparmio e dell’affidabilità, per i prossimi 30 anni.
+            Con New Energy hai la certezza del risparmio e dell’affidabilità, per i prossimi 25 anni.
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
