@@ -7,6 +7,8 @@ import { PHONE_HREF, WHATSAPP_HREF } from '@/lib/whatsapp';
 export function FloatingWhatsApp() {
   // Mentre il modulo preventivo è sullo schermo i pulsanti spariscono: su telefono coprirebbero i campi.
   const [overForm, setOverForm] = useState(false);
+  // Anche mentre i bottoni principali della hero sono visibili: sarebbero doppioni.
+  const [overHero, setOverHero] = useState(false);
 
   useEffect(() => {
     const form = document.getElementById('contattaci');
@@ -17,10 +19,18 @@ export function FloatingWhatsApp() {
     return () => io.disconnect();
   }, []);
 
+  useEffect(() => {
+    const cta = document.getElementById('hero-cta');
+    if (!cta || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver(([e]) => setOverHero(e.isIntersecting));
+    io.observe(cta);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <div
       className={`fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3 transition-[opacity,visibility] duration-200 ${
-        overForm ? 'opacity-0 invisible' : 'opacity-100'
+        overForm || overHero ? 'opacity-0 invisible' : 'opacity-100'
       }`}
     >
       <a

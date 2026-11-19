@@ -1,4 +1,4 @@
-import { ArrowRight, Phone, MessageCircle, ShieldCheck, MapPin, Star, Zap } from 'lucide-react';
+import { ArrowRight, Phone, MessageCircle, ShieldCheck, MapPin, Star } from 'lucide-react';
 import { trackPhoneClick, trackWhatsAppClick } from '@/lib/analytics';
 import { PHONE_DISPLAY, PHONE_HREF, WHATSAPP_HREF } from '@/lib/whatsapp';
 
@@ -28,21 +28,23 @@ export function Hero() {
           </div>
 
           <p className="mt-5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">
-            Fotovoltaico in Campania
+            New Energy Srl · Pozzuoli (NA)
           </p>
 
           <h1 className="mt-3 text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-white leading-[1.05]">
-            Installazione impianti{' '}
-            <span className="block text-gradient-green mt-1">fotovoltaici in Campania</span>
+            Installatore fotovoltaico{' '}
+            <span className="block text-gradient-green mt-1">a Napoli e in Campania</span>
           </h1>
 
-          <p className="mt-6 text-lg text-white/85 leading-relaxed max-w-xl">
-            Il tuo impianto fotovoltaico deve darti tranquillità, non preoccupazioni. Con 30 anni di
-            esperienza, curiamo ogni dettaglio, lo installiamo in 15 giorni dalla firma e continuiamo
-            a seguirti anche dopo il montaggio.
+          <p className="mt-5 text-xl sm:text-2xl font-semibold text-white leading-snug">
+            Parli direttamente con chi installa.
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+          <p className="mt-3 text-base sm:text-lg text-white/85 leading-relaxed max-w-xl">
+            30 anni di esperienza, installazione in 15 giorni dalla firma e assistenza anche dopo il montaggio.
+          </p>
+
+          <div id="hero-cta" className="mt-7 flex flex-col sm:flex-row gap-3">
             <a
               href="#contattaci"
               className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-green text-white font-semibold shadow-glow hover:bg-brand-green-dark transition-all hover:-translate-y-0.5"
@@ -63,7 +65,7 @@ export function Hero() {
           </div>
 
           {/* Trust strip */}
-          <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-3 text-white/80 text-sm">
+          <div className="mt-6 flex flex-wrap items-center gap-x-7 gap-y-3 text-white/80 text-sm">
             <div className="flex items-center gap-2">
               <Star className="w-4 h-4 text-brand-orange fill-current" />
               5 stelle su Google
@@ -71,10 +73,6 @@ export function Hero() {
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-brand-green" />
               Garanzia 25 anni
-            </div>
-            <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 text-brand-orange" />
-              Installazione in 15 giorni dalla firma
             </div>
             <a href={PHONE_HREF} onClick={() => trackPhoneClick('hero_trust')} className="flex items-center gap-2 hover:text-white transition-colors">
               <Phone className="w-4 h-4 text-brand-green" />

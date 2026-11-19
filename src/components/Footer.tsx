@@ -32,7 +32,7 @@ export function Footer() {
               Ditta di impianti fotovoltaici e installatori di pannelli solari a Napoli, Pozzuoli e in tutta la Campania: Caserta, Avellino e Salerno.
               Parli direttamente col titolare.
             </p>
-            <div className="mt-5 flex items-center gap-2">
+            <div className="mt-5 flex flex-wrap items-center gap-2">
               <a
                 href={PHONE_HREF}
                 onClick={() => trackPhoneClick('footer_social')}
@@ -63,20 +63,24 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackEvent('social_click', { event_category: 'social', event_label: 'facebook' })}
-                aria-label="Facebook"
-                className="grid place-items-center w-10 h-10 rounded-lg bg-white/5 hover:bg-[#1877F2] text-white transition-colors"
+                aria-label="New Energy su Facebook"
+                title="New Energy su Facebook"
+                className="inline-flex items-center gap-2 px-3 h-10 text-sm rounded-lg bg-white/5 hover:bg-[#1877F2] text-white transition-colors"
               >
                 <Facebook className="w-4 h-4" />
+                Facebook
               </a>
               <a
                 href={INSTAGRAM_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackEvent('social_click', { event_category: 'social', event_label: 'instagram' })}
-                aria-label="Instagram"
-                className="grid place-items-center w-10 h-10 rounded-lg bg-white/5 hover:bg-gradient-to-br hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] text-white transition-colors"
+                aria-label="New Energy su Instagram"
+                title="New Energy su Instagram"
+                className="inline-flex items-center gap-2 px-3 h-10 text-sm rounded-lg bg-white/5 hover:bg-gradient-to-br hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] text-white transition-colors"
               >
                 <Instagram className="w-4 h-4" />
+                Instagram
               </a>
             </div>
           </div>
