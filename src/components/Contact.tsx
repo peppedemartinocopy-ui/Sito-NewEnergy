@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import { MessageCircle, Send, CheckCircle2, Loader2 } from 'lucide-react';
 import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
@@ -44,6 +44,8 @@ function getTrackingParams() {
 export function Contact() {
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  // Anti-spam: istante in cui il modulo è stato aperto (i bot lo compilano in un attimo).
+  const openedAt = useRef(Date.now());
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,6 +54,13 @@ export function Contact() {
 
     const form = e.currentTarget;
     const formData = new FormData(form);
+    // Campo trappola: un utente vero non lo vede e non lo compila. Se è pieno è un bot: finta conferma, nessun invio.
+    if (String(formData.get('sito_web') ?? '').trim() !== '') {
+      setStatus('success');
+      form.reset();
+      return;
+    }
+    formData.delete('sito_web');
     // Le chiavi partono tutte vuote: un campo facoltativo lasciato in bianco arriva comunque, come stringa vuota.
     const payload = {
       nome: '', telefono: '', email: '', comune: '', tipo: '', tempistica: '', messaggio: '',
@@ -66,6 +75,7 @@ export function Contact() {
           ...payload,
           source: 'website_newenergy',
           submittedAt: new Date().toISOString(),
+          fillMs: Date.now() - openedAt.current,
           pageUrl: window.location.href,
           ...getTrackingParams(),
         }),
@@ -135,6 +145,12 @@ export function Contact() {
                 </div>
               ) : (
                 <form id="form-lead" onSubmit={handleSubmit} className="space-y-3">
+                  <div aria-hidden="true" className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden">
+                    <label>
+                      Sito web
+                      <input type="text" name="sito_web" tabIndex={-1} autoComplete="off" />
+                    </label>
+                  </div>
                   <div className="grid sm:grid-cols-2 gap-3">
                     <Field label="Nome e cognome" required>
                       <input type="text" name="nome" required placeholder="Mario Rossi"
