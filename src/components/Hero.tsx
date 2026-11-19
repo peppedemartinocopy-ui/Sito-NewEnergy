@@ -1,4 +1,4 @@
-import { ArrowRight, Phone, MessageCircle, ShieldCheck, MapPin, Star, Zap } from 'lucide-react';
+import { ArrowRight, Phone, MessageCircle, ShieldCheck, Star, Zap } from 'lucide-react';
 import { trackPhoneClick, trackWhatsAppClick } from '@/lib/analytics';
 import { PHONE_DISPLAY, PHONE_HREF, WHATSAPP_HREF } from '@/lib/whatsapp';
 
@@ -9,37 +9,35 @@ export function Hero() {
       {/* Background photo of a real installation */}
       <div className="absolute inset-0">
         <img
-          src="/images/hero-impianto.webp"
-          srcSet="/images/hero-impianto-960.webp 960w, /images/hero-impianto-1280.webp 1280w, /images/hero-impianto.webp 1600w"
+          src="/images/hero-v2.webp"
+          srcSet="/images/hero-v2-720.webp 720w, /images/hero-v2.webp 1080w"
           sizes="100vw"
-          alt="Impianto fotovoltaico installato da New Energy in Campania"
-          className="w-full h-full object-cover"
+          alt="Pannelli solari fotovoltaici installati su un tetto in tegole"
+          className="w-full h-full object-cover object-[center_60%]"
         />
-        {/* Neutral dark overlay (grey/black) for a professional look */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-neutral-900/78 to-neutral-800/65" />
-        <div className="absolute -top-32 -right-24 w-[520px] h-[520px] rounded-full bg-white/5 blur-[120px]" />
+        {/* Sfumatura: chiara in alto, sempre più scura verso il basso, per far leggere bene i testi */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.22) 14%, rgba(0,0,0,0.52) 28%, rgba(0,0,0,0.76) 56%, rgba(0,0,0,0.92) 100%)',
+          }}
+        />
       </div>
 
       <div className="relative max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-28">
         <div className="max-w-2xl animate-fade-up">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/15 text-white/90 text-xs font-medium">
-            <MapPin className="w-3.5 h-3.5 text-brand-green" />
-            Napoli · Pozzuoli · Caserta · Avellino · Salerno
-          </div>
-
-          <p className="mt-5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">
-            Fotovoltaico in Campania
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white/90 [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">
+            Installatore fotovoltaico a Napoli e in Campania
           </p>
 
-          <h1 className="mt-3 text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-white leading-[1.05]">
-            Installazione impianti{' '}
-            <span className="block text-gradient-green mt-1">fotovoltaici in Campania</span>
+          <h1 className="mt-4 text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-white leading-[1.08] [text-shadow:0_2px_20px_rgba(0,0,0,0.6)]">
+            Il tuo impianto deve darti tranquillità,{' '}
+            <span className="block text-gradient-green mt-1">non preoccupazioni.</span>
           </h1>
 
-          <p className="mt-6 text-lg text-white/85 leading-relaxed max-w-xl">
-            Il tuo impianto fotovoltaico deve darti tranquillità, non preoccupazioni. Con 30 anni di
-            esperienza, curiamo ogni dettaglio, lo installiamo in 15 giorni dalla firma e continuiamo
-            a seguirti anche dopo il montaggio.
+          <p className="mt-6 text-lg text-white/90 leading-relaxed max-w-xl [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
+            Con New Energy hai la certezza del risparmio e dell’affidabilità, per i prossimi 30 anni.
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
