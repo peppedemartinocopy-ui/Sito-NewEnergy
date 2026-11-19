@@ -1,4 +1,4 @@
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, BadgeCheck } from 'lucide-react';
 import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
 
@@ -45,13 +45,32 @@ export function Gustavo() {
           <div className="mt-4 lg:mt-0 lg:col-start-2 lg:row-start-2 lg:self-start">
             <Reveal className="space-y-4 text-lg text-ink-700/85 leading-relaxed">
               <p>
-                Gustavo è il titolare di New Energy. Ha oltre 30 anni di esperienza e segue personalmente
-                il tuo progetto, dal primo incontro all’installazione.
+                Gustavo è il titolare e il responsabile tecnico di New Energy. Ha oltre 30 anni di esperienza
+                e segue personalmente il tuo progetto, dal primo incontro all’installazione.
               </p>
               <p>
                 Parli direttamente con lui, senza passare da un venditore all’altro. E se un domani hai
                 bisogno di assistenza, sai già a chi rivolgerti.
               </p>
+            </Reveal>
+
+            <Reveal className="mt-6">
+              <div className="rounded-2xl bg-white border border-ink-900/8 shadow-card p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-green-deep">Responsabile tecnico</p>
+                <p className="mt-1 font-display font-bold text-lg text-ink-900">Per. Ind. Gustavo Loporchio</p>
+                <ul className="mt-3 space-y-2 text-[15px] text-ink-700/90">
+                  {[
+                    'Perito industriale',
+                    'Esperto in Gestione dell’Energia (EGE)',
+                    'Norme UNI CEI 11339:2023 e UNI CEI EN 16247-5:2015',
+                  ].map((q) => (
+                    <li key={q} className="flex items-start gap-2">
+                      <BadgeCheck className="shrink-0 w-4 h-4 mt-1 text-brand-green-deep" />
+                      {q}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </Reveal>
 
             <Reveal className="mt-8">

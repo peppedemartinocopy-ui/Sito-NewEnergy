@@ -1,4 +1,4 @@
-import { Eye, Wrench, Ruler, ArrowRight, Sun, Car } from 'lucide-react';
+import { Eye, Wrench, Ruler, ArrowRight, Sun, Car, FileCheck2 } from 'lucide-react';
 import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
 
@@ -36,6 +36,17 @@ const PARTNERS = [
   { name: 'Viessmann', src: '/images/brands/viessmann.webp', size: 'h-8 sm:h-9', w: 299, h: 72 },
   { name: 'SolarEdge', src: '/images/brands/solaredge.webp', size: 'h-8 sm:h-9', w: 356, h: 72 },
   { name: 'Solplanet', src: '/images/brands/solplanet.webp', size: 'h-8 sm:h-9', w: 282, h: 72 },
+];
+
+// Durate di garanzia riportate nelle offerte New Energy.
+const WARRANTIES = [
+  { value: '25/30 anni', label: 'Moduli fotovoltaici', note: 'prodotto e prestazioni' },
+  { value: '10 anni', label: 'Inverter' },
+  { value: '15 anni', label: 'Batteria di accumulo' },
+  { value: '12 anni', label: 'Strutture di fissaggio' },
+  { value: '5 anni', label: 'Quadri elettrici' },
+  { value: '2 anni', label: 'Altri componenti' },
+  { value: 'A vita', label: 'Monitoraggio da remoto' },
 ];
 
 // Barra compatta "Soluzioni per la tua casa": prende il posto della sezione servizi (ancora #servizi).
@@ -76,6 +87,33 @@ export function WhyUs() {
             );
           })}
         </div>
+
+        {/* Garanzie */}
+        <Reveal className="mt-14">
+          <div className="rounded-3xl bg-white border border-ink-900/8 shadow-card px-6 py-7 sm:px-10 sm:py-9">
+            <h3 className="text-center font-display font-bold text-xl sm:text-2xl text-ink-900">
+              Le garanzie del tuo impianto
+            </h3>
+            <dl className="mt-7 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-x-4 gap-y-6 text-center">
+              {WARRANTIES.map((w) => (
+                <div key={w.label} className="last:col-span-2 sm:last:col-span-1">
+                  <dt className="font-display font-extrabold text-xl sm:text-2xl text-brand-green-deep">{w.value}</dt>
+                  <dd className="mt-1 text-sm text-ink-700/85 leading-snug">
+                    {w.label}
+                    {w.note && <span className="block text-xs text-ink-700/60">{w.note}</span>}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <div className="mt-7 pt-5 border-t border-ink-900/8 flex items-start sm:items-center justify-center gap-3 text-[15px] text-ink-800">
+              <FileCheck2 className="shrink-0 w-5 h-5 text-brand-green-deep mt-0.5 sm:mt-0" />
+              <p>Ogni impianto è consegnato con la dichiarazione di conformità ai sensi del D.M. 37/08.</p>
+            </div>
+            <p className="mt-3 text-center text-xs text-ink-700/60">
+              Le durate esatte dipendono dai componenti scelti e sono sempre indicate nell’offerta.
+            </p>
+          </div>
+        </Reveal>
 
         {/* Soluzioni per la tua casa */}
         <Reveal className="mt-14">

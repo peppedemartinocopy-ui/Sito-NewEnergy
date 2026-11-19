@@ -11,33 +11,35 @@ import { Reveal } from './Reveal';
 // wide: ultima tessera larga anche su telefono, così l'ultima riga resta piena (usa la foto intera, non il ritaglio).
 interface Photo {
   src: string;
+  // Configurazione indicativa, usata solo nel testo alternativo della foto (non visibile in pagina).
+  kit?: string;
   cls?: string;
   wide?: boolean;
 }
 
 const PHOTOS: Photo[] = [
-  { src: '/images/galleria-13.webp', cls: 'sm:row-span-2' },
-  { src: '/images/galleria-14.webp', cls: 'sm:row-span-2' },
-  { src: '/images/galleria-15.webp', cls: 'sm:col-span-2 sm:row-span-2' },
-  { src: '/images/galleria-16.webp', cls: 'sm:col-span-2 sm:row-span-2' },
-  { src: '/images/galleria-01.webp' },
-  { src: '/images/galleria-02.webp' },
-  { src: '/images/galleria-03.webp' },
-  { src: '/images/galleria-04.webp' },
+  { src: '/images/galleria-13.webp', kit: '3 kW con accumulo da 5 kWh', cls: 'sm:row-span-2' },
+  { src: '/images/galleria-14.webp', kit: '7 kW con accumulo da 15 kWh', cls: 'sm:row-span-2' },
+  { src: '/images/galleria-15.webp', kit: '6 kW con accumulo da 10 kWh', cls: 'sm:col-span-2 sm:row-span-2' },
+  { src: '/images/galleria-16.webp', kit: '7 kW con accumulo da 15 kWh', cls: 'sm:col-span-2 sm:row-span-2' },
+  { src: '/images/galleria-01.webp', kit: '6 kW con accumulo da 10 kWh' },
+  { src: '/images/galleria-02.webp', kit: '3 kW con accumulo da 5 kWh' },
+  { src: '/images/galleria-03.webp', kit: '7 kW con accumulo da 15 kWh' },
+  { src: '/images/galleria-04.webp', kit: '6 kW con accumulo da 10 kWh' },
   // dietro "Vedi altri lavori"
-  { src: '/images/galleria-06.webp' },
-  { src: '/images/galleria-07.webp' },
-  { src: '/images/galleria-08.webp' },
-  { src: '/images/galleria-09.webp' },
-  { src: '/images/galleria-11.webp' },
-  { src: '/images/galleria-12.webp' },
-  { src: '/images/galleria-10.webp', cls: 'col-span-2', wide: true },
+  { src: '/images/galleria-06.webp', kit: '7 kW con accumulo da 15 kWh' },
+  { src: '/images/galleria-07.webp', kit: '6 kW con accumulo da 10 kWh' },
+  { src: '/images/galleria-08.webp', kit: '3 kW con accumulo da 5 kWh' },
+  { src: '/images/galleria-09.webp', kit: '6 kW con accumulo da 10 kWh' },
+  { src: '/images/galleria-11.webp', kit: '7 kW con accumulo da 15 kWh' },
+  { src: '/images/galleria-12.webp', kit: '3 kW con accumulo da 5 kWh' },
+  { src: '/images/galleria-10.webp', kit: '6 kW con accumulo da 10 kWh', cls: 'col-span-2', wide: true },
 ];
 
 // Foto visibili prima di "Vedi altri lavori".
 const VISIBLE = 8;
 
-function GalleryPhoto({ src, wide }: { src: string; wide?: boolean }) {
+function GalleryPhoto({ src, wide, kit }: { src: string; wide?: boolean; kit?: string }) {
   const n = src.match(/galleria-(\d+)/)?.[1] ?? '';
   return (
     <div className="group relative w-full h-full overflow-hidden rounded-2xl bg-ink-900 cursor-pointer">
@@ -46,7 +48,7 @@ function GalleryPhoto({ src, wide }: { src: string; wide?: boolean }) {
         {!wide && <source media="(max-width: 639px)" srcSet={src.replace('.webp', '-m.webp')} />}
         <img
           src={src}
-          alt={`Impianto fotovoltaico e pannelli solari installati da New Energy in Campania${n ? ` - foto ${Number(n)}` : ''}`}
+          alt={`Impianto fotovoltaico${kit ? ` da ${kit}` : ''} installato da New Energy in Campania${n ? ` - foto ${Number(n)}` : ''}`}
           loading="lazy"
           decoding="async"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -72,7 +74,7 @@ export function Gallery() {
           {PHOTOS.map((p, i) =>
             i < VISIBLE || showAll ? (
               <div key={p.src} className={p.cls ?? ''}>
-                <GalleryPhoto src={p.src} wide={p.wide} />
+                <GalleryPhoto src={p.src} wide={p.wide} kit={p.kit} />
               </div>
             ) : null,
           )}

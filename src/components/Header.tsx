@@ -88,7 +88,7 @@ export function Header() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackWhatsAppClick('header')}
-              className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-brand-green text-white text-sm font-semibold shadow-glow hover:bg-brand-green-dark transition-all hover:-translate-y-0.5"
+              className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-brand-green-deep text-white text-sm font-semibold hover:bg-[#356a19] transition-all hover:-translate-y-0.5"
             >
               <MessageCircle className="w-4 h-4" />
               WhatsApp
@@ -137,7 +137,7 @@ export function Header() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackWhatsAppClick('mobile_menu')}
-              className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-brand-green text-white text-sm font-semibold"
+              className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-brand-green-deep text-white text-sm font-semibold"
             >
               <MessageCircle className="w-4 h-4" /> WhatsApp
             </a>

@@ -41,8 +41,7 @@ export function FloatingWhatsApp() {
         aria-label="Scrivici su WhatsApp"
         className="relative group"
       >
-        <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-30 group-hover:opacity-50" />
-        <span className="relative grid place-items-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-[0_8px_24px_rgba(37,211,102,0.45)] hover:scale-110 transition-transform">
+        <span className="relative grid place-items-center w-14 h-14 rounded-full bg-brand-green-deep text-white shadow-[0_8px_24px_rgba(15,28,20,0.35)] hover:scale-110 transition-transform">
           <MessageCircle className="w-7 h-7" strokeWidth={2.2} />
         </span>
       </a>

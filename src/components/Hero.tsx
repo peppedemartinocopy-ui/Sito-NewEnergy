@@ -12,7 +12,7 @@ export function Hero() {
           src="/images/hero-v2.webp"
           srcSet="/images/hero-v2-720.webp 720w, /images/hero-v2.webp 1080w"
           sizes="100vw"
-          alt="Pannelli solari fotovoltaici installati su un tetto in tegole"
+          alt="Impianto fotovoltaico installato da New Energy in Campania"
           className="w-full h-full object-cover object-[center_60%]"
         />
         {/* Sfumatura: chiara in alto, sempre più scura verso il basso, per far leggere bene i testi */}
@@ -28,17 +28,17 @@ export function Hero() {
       <div className="relative max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-28">
         <div className="max-w-2xl animate-fade-up">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/15 text-white/90 text-xs font-medium">
-            <MapPin className="w-3.5 h-3.5 text-brand-green" />
+            <MapPin className="w-3.5 h-3.5 text-[#8fbf6c]" />
             Napoli · Pozzuoli · Caserta · Avellino · Salerno
           </div>
 
-          <p className="mt-5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-green [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">
+          <p className="mt-5 text-sm font-semibold uppercase tracking-[0.18em] text-[#8fbf6c] [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">
             New Energy Srl · Pozzuoli (NA)
           </p>
 
           <h1 className="mt-3 text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-white leading-[1.08] [text-shadow:0_2px_20px_rgba(0,0,0,0.6)]">
             Il tuo impianto deve darti tranquillità,{' '}
-            <span className="block text-gradient-green mt-1">non preoccupazioni.</span>
+            <span className="block text-[#8fbf6c] mt-1">non preoccupazioni.</span>
           </h1>
 
           <p className="mt-6 text-lg text-white/90 leading-relaxed max-w-xl [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
