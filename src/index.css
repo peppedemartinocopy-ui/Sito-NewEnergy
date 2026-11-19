@@ -35,10 +35,20 @@ h1, h2, h3, h4, h5 {
 }
 
 /* Marquee for partners strip */
+.logo-marquee {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
 .marquee {
   display: flex;
   width: max-content;
+  will-change: transform;
   animation: marquee-scroll 40s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee { animation: none; width: auto; justify-content: center; }
+  .marquee > div { flex-wrap: wrap; justify-content: center; row-gap: 1.5rem; }
+  .marquee > div:nth-child(2) { display: none; }
 }
 @keyframes marquee-scroll {
   from { transform: translateX(0); }

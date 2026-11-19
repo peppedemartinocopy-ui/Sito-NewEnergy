@@ -65,12 +65,14 @@ export function WhyUs() {
           subtitle="Un impianto deve funzionare bene per anni. Per questo prestiamo attenzione a ogni dettaglio del montaggio, ne monitoriamo il funzionamento e restiamo a disposizione quando hai bisogno di assistenza."
         />
 
-        <div className="mt-14 grid lg:grid-cols-3 gap-5">
-          {REASONS.map((r, i) => {
+        {/* Telefono e tablet: card affiancate da scorrere con il dito. Desktop: tre colonne. */}
+        <Reveal className="mt-14 -mx-4 sm:-mx-6 lg:mx-0">
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar px-4 sm:px-6 pb-3 lg:grid lg:grid-cols-3 lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0">
+          {REASONS.map((r) => {
             const Icon = r.icon;
             return (
-              <Reveal key={r.title} delay={i * 70}>
-                <div className="group h-full p-7 rounded-2xl bg-white border border-ink-900/8 hover:border-brand-green/40 shadow-card hover:shadow-cardhover transition-all duration-300">
+              <div key={r.title} className="snap-center shrink-0 w-[86%] sm:w-[60%] lg:w-auto">
+                <div className="group h-full p-6 sm:p-7 rounded-2xl bg-white border border-ink-900/8 hover:border-brand-green/40 shadow-card hover:shadow-cardhover transition-all duration-300">
                   <div className="flex items-start gap-4">
                     <div className="shrink-0 grid place-items-center w-12 h-12 rounded-xl bg-brand-green/10 text-brand-green-dark group-hover:bg-brand-green group-hover:text-white transition-all duration-300">
                       <Icon className="w-6 h-6" strokeWidth={2} />
@@ -83,10 +85,11 @@ export function WhyUs() {
                     </div>
                   </div>
                 </div>
-              </Reveal>
+              </div>
             );
           })}
         </div>
+        </Reveal>
 
         {/* Garanzie */}
         <Reveal className="mt-14">
@@ -94,9 +97,9 @@ export function WhyUs() {
             <h3 className="text-center font-display font-bold text-xl sm:text-2xl text-ink-900">
               Le garanzie del tuo impianto
             </h3>
-            <dl className="mt-7 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-x-4 gap-y-6 text-center">
+            <dl className="mt-7 -mx-6 sm:-mx-10 lg:mx-0 px-6 sm:px-10 lg:px-0 flex gap-3 overflow-x-auto snap-x no-scrollbar pb-1 lg:grid lg:grid-cols-7 lg:gap-x-4 lg:overflow-visible text-center">
               {WARRANTIES.map((w) => (
-                <div key={w.label} className="last:col-span-2 sm:last:col-span-1">
+                <div key={w.label} className="snap-start shrink-0 w-[136px] sm:w-[150px] lg:w-auto">
                   <dt className="font-display font-extrabold text-xl sm:text-2xl text-brand-green-deep">{w.value}</dt>
                   <dd className="mt-1 text-sm text-ink-700/85 leading-snug">
                     {w.label}
@@ -121,11 +124,11 @@ export function WhyUs() {
             <p className="text-center text-xs font-semibold uppercase tracking-[0.18em] text-white/60">
               Soluzioni per la tua casa
             </p>
-            <div className="mt-4 grid sm:grid-cols-2 gap-4 sm:gap-8 max-w-2xl mx-auto">
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-8 max-w-2xl mx-auto">
               {SOLUTIONS.map((x) => {
                 const Icon = x.icon;
                 return (
-                  <div key={x.title} className="flex items-center gap-3 sm:justify-center">
+                  <div key={x.title} className="flex flex-col items-center text-center gap-2 sm:flex-row sm:text-left sm:gap-3 sm:justify-center">
                     <span className="shrink-0 grid place-items-center w-10 h-10 rounded-xl bg-brand-green/15 text-brand-green">
                       <Icon className="w-5 h-5" strokeWidth={2} />
                     </span>
@@ -161,17 +164,24 @@ export function WhyUs() {
           <p className="text-center text-sm font-semibold uppercase tracking-[0.18em] text-ink-700/60 mb-8">
             Lavoriamo con i migliori brand
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
-            {PARTNERS.map((p) => (
-              <img
-                key={p.name}
-                src={p.src}
-                alt={p.name}
-                width={p.w}
-                height={p.h}
-                className={`${p.size} w-auto object-contain`}
-              />
-            ))}
+          {/* Barra che scorre da sola (si ferma se il telefono ha "riduci animazioni"). La seconda copia serve a chiudere il giro senza stacchi. */}
+          <div className="logo-marquee overflow-hidden">
+            <div className="marquee" style={{ animationDuration: '32s' }}>
+              {[0, 1].map((copy) => (
+                <div key={copy} className="flex shrink-0 items-center gap-x-14 pr-14" aria-hidden={copy === 1 ? true : undefined}>
+                  {PARTNERS.map((p) => (
+                    <img
+                      key={p.name}
+                      src={p.src}
+                      alt={copy === 0 ? p.name : ''}
+                      width={p.w}
+                      height={p.h}
+                      className={`${p.size} w-auto object-contain shrink-0`}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </Reveal>
       </div>
