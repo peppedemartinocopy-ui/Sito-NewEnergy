@@ -137,6 +137,11 @@ export function WhyUs() {
                 );
               })}
             </div>
+            <p className="mt-4 text-center text-sm">
+              <a href="/pannelli-solari-napoli" className="text-white/80 underline underline-offset-4 decoration-white/30 hover:text-brand-green hover:decoration-brand-green transition-colors">
+                Pannelli solari a Napoli: come lavoriamo
+              </a>
+            </p>
           </div>
         </Reveal>
 

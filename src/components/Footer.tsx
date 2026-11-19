@@ -16,7 +16,12 @@ const NAV = [
   { href: '#contatti', label: 'Contatti' },
 ];
 
-export function Footer() {
+interface FooterProps {
+  /** Nelle pagine diverse dalla home le ancore del menu devono puntare alla home ("/#perche"). */
+  homePrefix?: string;
+}
+
+export function Footer({ homePrefix = '' }: FooterProps = {}) {
   return (
     <footer className="bg-ink-900 text-white/70 pt-16 pb-8 border-t border-white/5">
       <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
@@ -87,7 +92,7 @@ export function Footer() {
             <ul className="mt-4 space-y-2.5">
               {NAV.map((n) => (
                 <li key={n.href}>
-                  <a href={n.href} className="text-sm hover:text-brand-green transition-colors">
+                  <a href={homePrefix + n.href} className="text-sm hover:text-brand-green transition-colors">
                     {n.label}
                   </a>
                 </li>
@@ -99,7 +104,10 @@ export function Footer() {
           <div>
             <h3 className="font-display font-semibold text-white text-sm uppercase tracking-wider">Servizi</h3>
             <ul className="mt-4 space-y-2.5">
-              {['Fotovoltaico per la casa', 'Accumulo con batteria', 'Colonnine di ricarica', 'Manutenzione', 'Pratiche & detrazioni'].map((s) => (
+              <li className="text-sm">
+                <a href="/pannelli-solari-napoli" className="hover:text-brand-green transition-colors">Pannelli solari a Napoli</a>
+              </li>
+              {['Accumulo con batteria', 'Colonnine di ricarica', 'Manutenzione', 'Pratiche & detrazioni'].map((s) => (
                 <li key={s} className="text-sm">{s}</li>
               ))}
             </ul>

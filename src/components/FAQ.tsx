@@ -15,7 +15,7 @@ const FAQS: FAQItem[] = faqs;
 // Domande visibili all'apertura: le altre restano nella pagina ma nascoste fino al click.
 const VISIBLE = 6;
 
-export function FAQ() {
+export function FAQ({ items = FAQS }: { items?: FAQItem[] } = {}) {
   const [open, setOpen] = useState<number | null>(0);
   const [showAll, setShowAll] = useState(false);
 
@@ -29,7 +29,7 @@ export function FAQ() {
         />
 
         <div className="mt-12 max-w-3xl mx-auto space-y-3">
-          {FAQS.map((faq, i) => {
+          {items.map((faq, i) => {
             const isOpen = open === i;
             return (
               <Reveal key={faq.q} delay={Math.min(i, VISIBLE) * 50} className={i >= VISIBLE && !showAll ? 'hidden' : ''}>
@@ -71,7 +71,7 @@ export function FAQ() {
           })}
         </div>
 
-        {!showAll && (
+        {!showAll && items.length > VISIBLE && (
           <div className="mt-6 text-center">
             <button
               type="button"

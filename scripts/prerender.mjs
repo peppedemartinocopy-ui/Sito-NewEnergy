@@ -44,6 +44,39 @@ function deferScript(html) {
   return html.replace(m[0], () => loader);
 }
 
+
+const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+
+// Pagina di base (quella della home, con scheda "root" vuota) -> pagina Napoli.
+function napoliPage(base, seo, markup) {
+  let h = base;
+  const must = (re, repl, label) => {
+    if (!re.test(h)) throw new Error(`[napoli] elemento non trovato: ${label}`);
+    h = h.replace(re, repl);
+  };
+  must(/<title>[\s\S]*?<\/title>/, () => `<title>${esc(seo.title)}</title>`, 'title');
+  must(/<meta name="description" content="[^"]*"\s*\/?>/, () => `<meta name="description" content="${esc(seo.description)}">`, 'description');
+  must(/<link rel="canonical" href="[^"]*"\s*\/?>/, () => `<link rel="canonical" href="${seo.url}">`, 'canonical');
+  must(/<meta property="og:title" content="[^"]*"\s*\/?>/, () => `<meta property="og:title" content="${esc(seo.title)}">`, 'og:title');
+  must(/<meta property="og:description" content="[^"]*"\s*\/?>/, () => `<meta property="og:description" content="${esc(seo.description)}">`, 'og:description');
+  must(/<meta property="og:url" content="[^"]*"\s*\/?>/, () => `<meta property="og:url" content="${seo.url}">`, 'og:url');
+  must(/<meta name="twitter:title" content="[^"]*"\s*\/?>/, () => `<meta name="twitter:title" content="${esc(seo.title)}">`, 'twitter:title');
+  must(/<meta name="twitter:description" content="[^"]*"\s*\/?>/, () => `<meta name="twitter:description" content="${esc(seo.description)}">`, 'twitter:description');
+  // Via il FAQPage della home (le sue domande non sono su questa pagina); restano LocalBusiness e Person.
+  let removed = 0;
+  h = h.replace(/(?:<!--[^>]*-->\s*)?<script type="application\/ld\+json">[\s\S]*?<\/script>\s*/g, (m) => {
+    if (m.includes('"FAQPage"')) { removed++; return ''; }
+    return m;
+  });
+  if (removed !== 1) throw new Error(`[napoli] FAQPage della home: attesi 1 blocco, trovati ${removed}`);
+  const blocks = seo.jsonLd
+    .map((o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`)
+    .join('\n    ');
+  must(/<\/head>/, () => `    ${blocks}\n  </head>`, 'head');
+  must(/<div id="root"><\/div>/, () => `<div id="root">${lowPriorityBelowFold(markup)}</div>`, 'root');
+  return h;
+}
+
 async function viaSsr() {
   const { build } = await import('vite');
   await build({
@@ -62,6 +95,16 @@ async function viaSsr() {
   out = deferScript(out);
   out = compactHtml(out);
   fs.writeFileSync(file, out);
+
+  // Seconda pagina: /pannelli-solari-napoli (file dist/pannelli-solari-napoli.html, servito senza estensione da Netlify,
+  // come privacy e cookie). Parte dalla stessa pagina di base della home, con titolo, descrizione e schema propri.
+  const napoliFile = path.join(root, 'dist', 'pannelli-solari-napoli.html');
+  const napoliMarkup = mod.renderNapoli();
+  if (typeof napoliMarkup !== 'string' || napoliMarkup.length < 5000) throw new Error('HTML pagina Napoli troppo corto');
+  let np = napoliPage(html, mod.napoliSeo, napoliMarkup);
+  np = compactHtml(deferScript(np));
+  fs.writeFileSync(napoliFile, np);
+  console.log(`[prerender] OK (SSR) — dist/pannelli-solari-napoli.html creato, ${(fs.statSync(napoliFile).size / 1024).toFixed(1)} KB`);
   fs.rmSync(path.join(root, 'dist-ssr'), { recursive: true, force: true });
   console.log(`[prerender] OK (SSR) — dist/index.html aggiornato, ${(fs.statSync(file).size / 1024).toFixed(1)} KB`);
 }

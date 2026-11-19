@@ -3,7 +3,9 @@ import { Phone, MessageCircle, Menu, X } from 'lucide-react';
 import { trackPhoneClick, trackWhatsAppClick } from '@/lib/analytics';
 import { PHONE_DISPLAY, PHONE_HREF, WHATSAPP_HREF } from '@/lib/whatsapp';
 
-const NAV_LINKS = [
+export type NavLink = { href: string; label: string };
+
+const NAV_LINKS: NavLink[] = [
   { href: '#recensioni', label: 'Recensioni' },
   { href: '#perche', label: 'Perché noi' },
   { href: '#servizi', label: 'Servizi' },
@@ -14,7 +16,14 @@ const NAV_LINKS = [
 ];
 
 
-export function Header() {
+interface HeaderProps {
+  /** Voci di menu: di default quelle della home. Le altre pagine passano le proprie. */
+  links?: NavLink[];
+  /** Dove porta il logo: '#top' nella home, '/' nelle altre pagine. */
+  logoHref?: string;
+}
+
+export function Header({ links = NAV_LINKS, logoHref = '#top' }: HeaderProps = {}) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -38,7 +47,7 @@ export function Header() {
       <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-[72px]">
           {/* Logo */}
-          <a href="#top" className="flex items-center group" onClick={closeMenu}>
+          <a href={logoHref} className="flex items-center group" onClick={closeMenu}>
             <span
               className={`inline-flex items-center rounded-xl transition-all ${
                 scrolled ? '' : 'bg-white/95 px-2.5 py-1.5 shadow-sm'
@@ -54,7 +63,7 @@ export function Header() {
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1">
-            {NAV_LINKS.map((link) => (
+            {links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -114,7 +123,7 @@ export function Header() {
         }`}
       >
         <nav className="px-4 sm:px-6 py-3 flex flex-col">
-          {NAV_LINKS.map((link) => (
+          {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
