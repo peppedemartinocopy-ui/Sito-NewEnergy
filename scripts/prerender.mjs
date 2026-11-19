@@ -72,6 +72,8 @@ function napoliPage(base, seo, markup) {
   const blocks = seo.jsonLd
     .map((o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`)
     .join('\n    ');
+  // La foto principale di questa pagina è diversa da quella della home: il preload deve puntare a quella giusta.
+  must(/<link rel="preload" as="image" href="\/images\/hero-v2\.webp"[^>]*>/, () => '<link rel="preload" as="image" href="/images/hero-napoli.webp" imagesrcset="/images/hero-napoli-720.webp 720w, /images/hero-napoli.webp 1080w" imagesizes="100vw" fetchpriority="high">', 'preload hero');
   must(/<\/head>/, () => `    ${blocks}\n  </head>`, 'head');
   must(/<div id="root"><\/div>/, () => `<div id="root">${lowPriorityBelowFold(markup)}</div>`, 'root');
   return h;

@@ -49,11 +49,11 @@ export default function NapoliPage() {
         <section id="top" className="relative overflow-hidden bg-ink-900 pt-[72px]">
           <div className="absolute inset-0">
             <img
-              src="/images/hero-v2.webp"
-              srcSet="/images/hero-v2-720.webp 720w, /images/hero-v2.webp 1080w"
+              src="/images/hero-napoli.webp"
+              srcSet="/images/hero-napoli-720.webp 720w, /images/hero-napoli.webp 1080w"
               sizes="100vw"
-              alt="Impianto fotovoltaico installato da New Energy in Campania"
-              className="w-full h-full object-cover object-[center_60%]"
+              alt="Pannelli fotovoltaici su un tetto a tegole"
+              className="w-full h-full object-cover object-[center_45%]"
             />
             <div
               className="absolute inset-0"
@@ -154,22 +154,25 @@ export default function NapoliPage() {
               </p>
             </Reveal>
 
-            <div className="mt-12 grid lg:grid-cols-3 gap-5">
-              {DISTINGUE.map((d, i) => {
+            {/* Telefono e tablet: card da scorrere con il dito. Desktop: tre colonne. */}
+            <Reveal className="mt-12 -mx-4 sm:-mx-6 lg:mx-0">
+            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar px-4 sm:px-6 pb-3 lg:grid lg:grid-cols-3 lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0">
+              {DISTINGUE.map((d) => {
                 const Icon = d.icon;
                 return (
-                  <Reveal key={d.title} delay={i * 70}>
-                    <div className="group h-full p-7 rounded-2xl bg-white border border-ink-900/8 hover:border-brand-green/40 shadow-card hover:shadow-cardhover transition-all duration-300">
+                  <div key={d.title} className="snap-center shrink-0 w-[86%] sm:w-[60%] lg:w-auto">
+                    <div className="group h-full p-6 sm:p-7 rounded-2xl bg-white border border-ink-900/8 hover:border-brand-green/40 shadow-card hover:shadow-cardhover transition-all duration-300">
                       <div className="grid place-items-center w-12 h-12 rounded-xl bg-brand-green/10 text-brand-green-dark group-hover:bg-brand-green group-hover:text-white transition-all duration-300">
                         <Icon className="w-6 h-6" strokeWidth={2} />
                       </div>
                       <h3 className="mt-4 font-display font-bold text-lg text-ink-900 leading-snug">{d.title}</h3>
                       <p className="mt-2 text-[15px] text-ink-700/80 leading-relaxed">{d.text}</p>
                     </div>
-                  </Reveal>
+                  </div>
                 );
               })}
             </div>
+            </Reveal>
           </div>
         </section>
 
@@ -207,9 +210,9 @@ export default function NapoliPage() {
             <SectionHeading eyebrow="Garanzie" title={<>Garanzie, <span className="text-gradient-green">scritte nell’offerta</span></>} />
             <Reveal className="mt-10">
               <div className="rounded-3xl bg-white border border-ink-900/8 shadow-card px-6 py-7 sm:px-10 sm:py-9">
-                <dl className="flex flex-wrap justify-center gap-x-4 gap-y-6 text-center">
+                <dl className="-mx-6 sm:-mx-10 lg:mx-0 px-6 sm:px-10 lg:px-0 flex gap-3 overflow-x-auto snap-x no-scrollbar pb-1 lg:flex-wrap lg:justify-center lg:gap-x-4 lg:gap-y-6 lg:overflow-visible text-center">
                   {NAPOLI_WARRANTIES.map((w) => (
-                    <div key={w.label} className="w-[calc(50%-0.5rem)] sm:w-[calc(25%-0.75rem)] last:w-full sm:last:w-[calc(25%-0.75rem)]">
+                    <div key={w.label} className="snap-start shrink-0 w-[136px] sm:w-[150px] lg:w-[calc(25%-0.75rem)]">
                       <dt className="font-display font-extrabold text-xl sm:text-2xl text-brand-green-deep">{w.value}</dt>
                       <dd className="mt-1 text-sm text-ink-700/85 leading-snug">
                         {w.label}
