@@ -45,10 +45,10 @@ export function Hero() {
             Con New Energy hai la certezza del risparmio e dell’affidabilità, per i prossimi 25 anni.
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+          <div className="mt-8 flex flex-col items-start sm:flex-row gap-2.5 sm:gap-3">
             <a
               href="#contattaci"
-              className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-green text-white font-semibold shadow-glow hover:bg-brand-green-dark transition-all hover:-translate-y-0.5"
+              className="group inline-flex items-center justify-center gap-2 w-[232px] sm:w-auto h-11 sm:h-auto px-5 sm:px-6 sm:py-3.5 text-[15px] sm:text-base rounded-lg sm:rounded-xl bg-brand-green-deep text-white font-semibold hover:bg-[#356a19] transition-all hover:-translate-y-0.5"
             >
               Richiedi un preventivo
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -58,9 +58,9 @@ export function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackWhatsAppClick('hero')}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 backdrop-blur border border-white/20 text-white font-semibold hover:bg-white/15 transition-all"
+              className="inline-flex items-center justify-center gap-2 w-[232px] sm:w-auto h-11 sm:h-auto px-5 sm:px-6 sm:py-3.5 text-[15px] sm:text-base rounded-lg sm:rounded-xl bg-white/10 backdrop-blur border border-white/25 text-white font-semibold hover:bg-white/15 transition-all"
             >
-              <MessageCircle className="w-4 h-4 text-brand-green" />
+              <MessageCircle className="w-4 h-4 text-white/80" />
               Scrivici su WhatsApp
             </a>
           </div>
