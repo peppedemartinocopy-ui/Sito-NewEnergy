@@ -42,7 +42,7 @@ const PARTNERS = [
 const WARRANTIES = [
   { value: '25/30 anni', label: 'Moduli fotovoltaici', note: 'prodotto e prestazioni' },
   { value: '10 anni', label: 'Inverter' },
-  { value: '15 anni', label: 'Batteria di accumulo' },
+  { value: '10/15 anni', label: 'Batteria di accumulo', note: 'in base al modello' },
   { value: '12 anni', label: 'Strutture di fissaggio' },
   { value: '5 anni', label: 'Quadri elettrici' },
   { value: '2 anni', label: 'Altri componenti' },
