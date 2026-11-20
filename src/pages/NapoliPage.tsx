@@ -108,7 +108,7 @@ export default function NapoliPage() {
                   5 stelle su Google
                 </div>
                 <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-brand-green" />
+                  <ShieldCheck className="w-4 h-4 text-brand-green-light" />
                   Garanzia 25 anni
                 </div>
                 <div className="flex items-center gap-2">
@@ -275,8 +275,6 @@ export default function NapoliPage() {
           </div>
         </section>
 
-        <Qualifiche />
-
         {/* Incentivi e zone */}
         <section id="incentivi" className="pb-16 lg:pb-20 bg-white">
           <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
@@ -305,6 +303,7 @@ export default function NapoliPage() {
 
         <FAQ items={NAPOLI_FAQS} />
         <Contact />
+        <Qualifiche />
       </main>
       <Footer homePrefix="/" />
       <FloatingWhatsApp />

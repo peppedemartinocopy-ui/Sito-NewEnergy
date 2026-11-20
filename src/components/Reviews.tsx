@@ -103,7 +103,7 @@ export function Reviews() {
             href={GOOGLE_REVIEWS_HREF}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-green text-white font-semibold shadow-glow hover:bg-brand-green-dark transition-all group"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-green text-white font-semibold hover:bg-[#356a19] transition-all group"
           >
             Leggi tutte le recensioni su Google
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

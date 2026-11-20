@@ -59,11 +59,11 @@ h1, h2, h3, h4, h5 {
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: #f1f5f3; }
 ::-webkit-scrollbar-thumb { background: #c7d4cc; border-radius: 8px; }
-::-webkit-scrollbar-thumb:hover { background: #7BC143; }
+::-webkit-scrollbar-thumb:hover { background: #3f7a1f; }
 
 /* Focus ring for accessibility on interactive elements */
 a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
-  outline: 2px solid #7BC143;
+  outline: 2px solid #3f7a1f;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -74,7 +74,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 /* Gradient text */
 .text-gradient-green {
-  background: linear-gradient(120deg, #5a9e2e 0%, #7BC143 60%, #9fd956 100%);
+  background: #3f7a1f;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

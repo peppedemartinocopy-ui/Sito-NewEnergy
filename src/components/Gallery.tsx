@@ -96,7 +96,7 @@ export function Gallery() {
         <Reveal className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
             href="#contattaci"
-            className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-green text-white font-semibold shadow-glow hover:bg-brand-green-dark transition-all hover:-translate-y-0.5"
+            className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-green text-white font-semibold hover:bg-[#356a19] transition-all hover:-translate-y-0.5"
           >
             Richiedi un preventivo
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

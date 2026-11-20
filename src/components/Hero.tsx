@@ -72,7 +72,7 @@ export function Hero() {
               5 stelle su Google
             </div>
             <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-brand-green" />
+              <ShieldCheck className="w-4 h-4 text-brand-green-light" />
               Garanzia 25 anni
             </div>
             <div className="flex items-center gap-2">

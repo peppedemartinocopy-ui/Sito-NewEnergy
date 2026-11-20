@@ -24,8 +24,8 @@ function App() {
         <Reviews />
         <WhyUs />
         <Gustavo />
-        <Qualifiche />
         <Contact />
+        <Qualifiche />
         <Gallery />
         <FAQ />
         <ContactInfo />

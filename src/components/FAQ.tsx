@@ -87,7 +87,7 @@ export function FAQ({ items = FAQS }: { items?: FAQItem[] } = {}) {
         <Reveal className="mt-12 flex justify-center">
           <a
             href="#contattaci"
-            className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-green text-white font-semibold shadow-glow hover:bg-brand-green-dark transition-all hover:-translate-y-0.5"
+            className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-green text-white font-semibold hover:bg-[#356a19] transition-all hover:-translate-y-0.5"
           >
             Richiedi un preventivo gratuito
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

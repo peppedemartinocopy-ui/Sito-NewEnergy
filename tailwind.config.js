@@ -5,9 +5,10 @@ export default {
     extend: {
       colors: {
         brand: {
-          green: '#7BC143',
-          'green-dark': '#5a9e2e',
+          green: '#3f7a1f',
+          'green-dark': '#3f7a1f',
           'green-deep': '#3f7a1f',
+          'green-light': '#8fbf6c',
           orange: '#F7B731',
           'orange-dark': '#e09b1f',
           blue: '#0097C1',

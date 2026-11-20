@@ -94,7 +94,7 @@ export function Contact() {
 
   return (
     <section id="contattaci" className="pt-6 pb-20 sm:py-20 lg:py-28 bg-ink-900 relative overflow-hidden">
-      <div className="absolute -top-32 -right-24 w-[420px] h-[420px] rounded-full bg-brand-green/15 blur-[120px]" />
+      <div className="absolute -top-32 -right-24 w-[420px] h-[420px] rounded-full bg-brand-green-light/15 blur-[120px]" />
       <div className="absolute -bottom-32 -left-24 w-[360px] h-[360px] rounded-full bg-brand-blue/10 blur-[120px]" />
 
       <div className="relative max-w-container mx-auto px-4 sm:px-6 lg:px-8">
@@ -102,12 +102,12 @@ export function Contact() {
           light
           compact
           eyebrow="Richiedi un preventivo"
-          title={<>Vediamo insieme la miglior soluzione <span className="text-gradient-green">per casa tua.</span></>}
+          title={<>Vediamo insieme la miglior soluzione <span className="text-brand-green-light">per casa tua.</span></>}
           subtitle={
             <>
               Parla direttamente con Gustavo. Ti aiuterà a valutare le soluzioni più adatte ai tuoi consumi,
               chiarire ogni dubbio e preparare un preventivo su misura.
-              <span className="block mt-2 sm:mt-3 text-base font-semibold text-brand-green">
+              <span className="block mt-2 sm:mt-3 text-base font-semibold text-brand-green-light">
                 Ti richiamiamo entro 24 ore, senza impegno.
               </span>
             </>
@@ -131,7 +131,7 @@ export function Contact() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackWhatsAppClick('contact_success')}
-                    className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-green text-white font-semibold shadow-glow hover:bg-brand-green-dark transition-all"
+                    className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-green text-white font-semibold hover:bg-[#356a19] transition-all"
                   >
                     <MessageCircle className="w-4 h-4" /> Scrivici ora su WhatsApp
                   </a>
@@ -216,7 +216,7 @@ export function Contact() {
                   <button
                     type="submit"
                     disabled={status === 'loading'}
-                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-brand-green text-white text-[17px] font-bold shadow-glow hover:bg-brand-green-dark transition-all disabled:opacity-60"
+                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-brand-green text-white text-[17px] font-bold hover:bg-[#356a19] transition-all disabled:opacity-60"
                   >
                     {status === 'loading' ? (
                       <><Loader2 className="w-4 h-4 animate-spin" /> Invio in corso…</>

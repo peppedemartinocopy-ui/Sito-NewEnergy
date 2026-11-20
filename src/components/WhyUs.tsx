@@ -129,7 +129,7 @@ export function WhyUs() {
                 const Icon = x.icon;
                 return (
                   <div key={x.title} className="flex flex-col items-center text-center gap-2 sm:flex-row sm:text-left sm:gap-3 sm:justify-center">
-                    <span className="shrink-0 grid place-items-center w-10 h-10 rounded-xl bg-brand-green/15 text-brand-green">
+                    <span className="shrink-0 grid place-items-center w-10 h-10 rounded-xl bg-brand-green-light/15 text-brand-green-light">
                       <Icon className="w-5 h-5" strokeWidth={2} />
                     </span>
                     <div>
@@ -141,7 +141,7 @@ export function WhyUs() {
               })}
             </div>
             <p className="mt-4 text-center text-sm">
-              <a href="/pannelli-solari-napoli" className="text-white/80 underline underline-offset-4 decoration-white/30 hover:text-brand-green hover:decoration-brand-green transition-colors">
+              <a href="/pannelli-solari-napoli" className="text-white/80 underline underline-offset-4 decoration-white/30 hover:text-brand-green-light hover:decoration-brand-green-light transition-colors">
                 Come lavoriamo
               </a>
             </p>
@@ -152,7 +152,7 @@ export function WhyUs() {
         <Reveal className="mt-10 flex justify-center">
           <a
             href="#contattaci"
-            className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-green text-white font-semibold shadow-glow hover:bg-brand-green-dark transition-all hover:-translate-y-0.5"
+            className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-green text-white font-semibold hover:bg-[#356a19] transition-all hover:-translate-y-0.5"
           >
             Richiedi un preventivo
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

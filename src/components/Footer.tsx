@@ -92,7 +92,7 @@ export function Footer({ homePrefix = '' }: FooterProps = {}) {
             <ul className="mt-4 space-y-2.5">
               {NAV.map((n) => (
                 <li key={n.href}>
-                  <a href={homePrefix + n.href} className="text-sm hover:text-brand-green transition-colors">
+                  <a href={homePrefix + n.href} className="text-sm hover:text-brand-green-light transition-colors">
                     {n.label}
                   </a>
                 </li>
@@ -105,7 +105,7 @@ export function Footer({ homePrefix = '' }: FooterProps = {}) {
             <h3 className="font-display font-semibold text-white text-sm uppercase tracking-wider">Servizi</h3>
             <ul className="mt-4 space-y-2.5">
               <li className="text-sm">
-                <a href="/pannelli-solari-napoli" className="hover:text-brand-green transition-colors">Pannelli solari a Napoli</a>
+                <a href="/pannelli-solari-napoli" className="hover:text-brand-green-light transition-colors">Pannelli solari a Napoli</a>
               </li>
               {['Accumulo con batteria', 'Colonnine di ricarica', 'Manutenzione', 'Pratiche & detrazioni'].map((s) => (
                 <li key={s} className="text-sm">{s}</li>
@@ -118,18 +118,18 @@ export function Footer({ homePrefix = '' }: FooterProps = {}) {
             <h3 className="font-display font-semibold text-white text-sm uppercase tracking-wider">Contatti</h3>
             <ul className="mt-4 space-y-3">
               <li className="flex items-start gap-2.5 text-sm">
-                <MapPin className="w-4 h-4 text-brand-green mt-0.5 shrink-0" />
+                <MapPin className="w-4 h-4 text-brand-green-light mt-0.5 shrink-0" />
                 <span>Via Provinciale per Pianura, 20b<br />80078 Pozzuoli (NA)</span>
               </li>
               <li className="flex items-center gap-2.5 text-sm">
-                <Phone className="w-4 h-4 text-brand-green shrink-0" />
-                <a href={PHONE_HREF} onClick={() => trackPhoneClick('footer_contact')} className="hover:text-brand-green transition-colors">
+                <Phone className="w-4 h-4 text-brand-green-light shrink-0" />
+                <a href={PHONE_HREF} onClick={() => trackPhoneClick('footer_contact')} className="hover:text-brand-green-light transition-colors">
                   {PHONE_DISPLAY}
                 </a>
               </li>
               <li className="flex items-center gap-2.5 text-sm">
-                <Mail className="w-4 h-4 text-brand-green shrink-0" />
-                <a href="mailto:Newenergyfotovoltaici@gmail.com" className="hover:text-brand-green transition-colors break-all">
+                <Mail className="w-4 h-4 text-brand-green-light shrink-0" />
+                <a href="mailto:Newenergyfotovoltaici@gmail.com" className="hover:text-brand-green-light transition-colors break-all">
                   Newenergyfotovoltaici@gmail.com
                 </a>
               </li>
@@ -140,8 +140,8 @@ export function Footer({ homePrefix = '' }: FooterProps = {}) {
         <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50">
           <p>© {new Date().getFullYear()} New Energy Srl — Pozzuoli (NA) — P.IVA 10491571211 — Tutti i diritti riservati</p>
           <div className="flex items-center gap-4">
-            <a href="/privacy.html" target="_blank" rel="noopener noreferrer" className="hover:text-brand-green transition-colors">Privacy</a>
-            <a href="/cookie.html" target="_blank" rel="noopener noreferrer" className="hover:text-brand-green transition-colors">Cookie Policy</a>
+            <a href="/privacy.html" target="_blank" rel="noopener noreferrer" className="hover:text-brand-green-light transition-colors">Privacy</a>
+            <a href="/cookie.html" target="_blank" rel="noopener noreferrer" className="hover:text-brand-green-light transition-colors">Cookie Policy</a>
           </div>
         </div>
       </div>

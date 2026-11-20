@@ -22,11 +22,11 @@ export function SectionHeading({
   return (
     <Reveal className={center ? 'text-center max-w-3xl mx-auto' : 'max-w-3xl'}>
       <div className={`inline-flex items-center gap-2 ${center ? 'justify-center' : ''}`}>
-        <span className="h-px w-8 bg-brand-green" />
-        <span className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green-dark">
+        <span className={`h-px w-8 ${light ? 'bg-brand-green-light' : 'bg-brand-green'}`} />
+        <span className={`text-sm font-semibold uppercase tracking-[0.18em] ${light ? 'text-brand-green-light' : 'text-brand-green-dark'}`}>
           {eyebrow}
         </span>
-        <span className="h-px w-8 bg-brand-green" />
+        <span className={`h-px w-8 ${light ? 'bg-brand-green-light' : 'bg-brand-green'}`} />
       </div>
       <h2
         className={`mt-4 text-3xl sm:text-4xl md:text-[2.75rem] font-bold leading-[1.1] ${
