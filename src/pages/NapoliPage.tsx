@@ -10,6 +10,7 @@ import { SectionHeading } from '@/components/SectionHeading';
 import { Reveal } from '@/components/Reveal';
 import { FAQ } from '@/components/FAQ';
 import { Contact } from '@/components/Contact';
+import { Qualifiche } from '@/components/Qualifiche';
 
 const NAV: NavLink[] = [
   { href: '#cosa-facciamo', label: 'Cosa facciamo' },
@@ -112,7 +113,7 @@ export default function NapoliPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Zap className="w-4 h-4 text-brand-orange" />
-                  Installazione in 15 giorni dalla firma
+                  Installazione in circa 15 giorni dalla firma
                 </div>
               </div>
             </div>
@@ -184,7 +185,7 @@ export default function NapoliPage() {
               <div className="rounded-3xl bg-white border border-ink-900/8 shadow-card p-7 sm:p-9">
                 <div className="grid sm:grid-cols-2 gap-6 text-center">
                   <div>
-                    <div className="font-display font-extrabold text-4xl sm:text-5xl text-brand-green-deep whitespace-nowrap">15 giorni</div>
+                    <div className="font-display font-extrabold text-4xl sm:text-5xl text-brand-green-deep whitespace-nowrap">circa 15 giorni</div>
                     <div className="mt-1 text-sm text-ink-700/85">dalla firma all’impianto installato</div>
                   </div>
                   <div>
@@ -195,8 +196,8 @@ export default function NapoliPage() {
                 <p className="mt-6 flex items-start justify-center gap-3 text-[16px] text-ink-800 leading-relaxed">
                   <Clock className="shrink-0 w-5 h-5 text-brand-green-deep mt-1" />
                   <span>
-                    Dalla firma del contratto l’impianto è installato in 15 giorni, materiali e lavori compresi. Il
-                    cantiere in sé dura meno di una settimana.
+                    Di norma l’impianto è installato in circa 15 giorni dalla firma del contratto, materiali e lavori
+                    compresi, salvo disponibilità dei materiali. Il cantiere in sé dura meno di una settimana.
                   </span>
                 </p>
               </div>
@@ -273,6 +274,8 @@ export default function NapoliPage() {
             </div>
           </div>
         </section>
+
+        <Qualifiche />
 
         {/* Incentivi e zone */}
         <section id="incentivi" className="pb-16 lg:pb-20 bg-white">

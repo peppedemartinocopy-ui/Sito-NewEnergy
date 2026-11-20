@@ -12,6 +12,14 @@ export const NAPOLI_FAQS = [
     a: 'Dipende da consumi, tetto e accumulo. Per questo non esiste un prezzo "da listino": ti mandiamo un preventivo su misura, con tutte le voci.',
   },
   {
+    q: 'New Energy è abilitata e rilascia la dichiarazione di conformità?',
+    a: 'Sì. Operiamo come impresa abilitata ai sensi del D.M. 37/08: a fine lavori ricevi la dichiarazione di conformità dell’impianto. Il responsabile tecnico è il Per. Ind. Gustavo Loporchio.',
+  },
+  {
+    q: 'Che garanzie ho sull’impianto?',
+    a: 'Moduli 25 o 30 anni su prodotto e prestazioni, inverter 10 anni, batteria 10 o 15 anni in base al modello, strutture 12 anni, quadri 5 anni, monitoraggio a vita e 2 anni di assistenza gratuita sul posto. Le durate esatte dipendono dai componenti scelti e sono sempre scritte nell’offerta.',
+  },
+  {
     q: 'Conviene con l’accumulo?',
     a: 'Se consumi soprattutto la sera, di solito sì. Lo vediamo sui tuoi consumi reali, non a sensazione.',
   },

@@ -77,7 +77,7 @@ export function Hero() {
             </div>
             <div className="flex items-center gap-2">
               <Zap className="w-4 h-4 text-brand-orange" />
-              Installazione in 15 giorni dalla firma
+              Installazione in circa 15 giorni dalla firma
             </div>
           </div>
         </div>
