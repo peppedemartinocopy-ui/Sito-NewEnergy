@@ -9,8 +9,12 @@ const container = document.getElementById('root')!;
 // la home non pesa di un byte in più.
 const isNapoli = window.location.pathname.replace(/\/+$/, '') === '/pannelli-solari-napoli';
 
+const isOfferta = window.location.pathname.replace(/\/+$/, '') === '/offerta';
+
 if (isNapoli) {
   import('./pages/NapoliPage').then((m) => mount(<m.default />));
+} else if (isOfferta) {
+  import('./pages/OffertaPage').then((m) => mount(<m.default />));
 } else {
   mount(<App />);
 }

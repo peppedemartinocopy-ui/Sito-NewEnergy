@@ -45,6 +45,23 @@ function deferScript(html) {
 }
 
 
+// Landing per le campagne Meta: non indicizzabile, senza schema, senza canonical verso la home.
+function offertaPage(base, markup) {
+  let h = base;
+  const must = (re, repl, label) => {
+    if (!re.test(h)) throw new Error(`[offerta] elemento non trovato: ${label}`);
+    h = h.replace(re, repl);
+  };
+  must(/<title>[\s\S]*?<\/title>/, () => '<title>New Energy | Preventivo impianto fotovoltaico</title>', 'title');
+  must(/<meta name="description" content="[^"]*"\s*\/?>/, () => '<meta name="description" content="Preventivo per il tuo impianto fotovoltaico, direttamente dai tecnici di New Energy.">', 'description');
+  must(/<meta name="robots" content="[^"]*"\s*\/?>/, () => '<meta name="robots" content="noindex, nofollow">', 'robots');
+  must(/<link rel="canonical" href="[^"]*"\s*\/?>/, () => '', 'canonical');
+  h = h.replace(/(?:<!--[^>]*-->\s*)?<script type="application\/ld\+json">[\s\S]*?<\/script>\s*/g, '');
+  must(/<link rel="preload" as="image" href="\/images\/hero-tetto\.webp"[^>]*>/, () => '<link rel="preload" as="image" href="/images/hero-v2.webp" imagesrcset="/images/hero-v2-720.webp 720w, /images/hero-v2.webp 1080w" imagesizes="(min-width: 1040px) 500px, 100vw" fetchpriority="high">', 'preload hero');
+  must(/<div id="root"><\/div>/, () => `<div id="root">${lowPriorityBelowFold(markup)}</div>`, 'root');
+  return h;
+}
+
 const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
 // Pagina di base (quella della home, con scheda "root" vuota) -> pagina Napoli.
@@ -107,6 +124,12 @@ async function viaSsr() {
   np = compactHtml(deferScript(np));
   fs.writeFileSync(napoliFile, np);
   console.log(`[prerender] OK (SSR) — dist/pannelli-solari-napoli.html creato, ${(fs.statSync(napoliFile).size / 1024).toFixed(1)} KB`);
+  // Terza pagina: /offerta (dist/offerta.html), la landing delle campagne Meta.
+  const offertaFile = path.join(root, 'dist', 'offerta.html');
+  const offertaMarkup = mod.renderOfferta();
+  if (typeof offertaMarkup !== 'string' || offertaMarkup.length < 5000) throw new Error('HTML pagina offerta troppo corto');
+  fs.writeFileSync(offertaFile, compactHtml(deferScript(offertaPage(html, offertaMarkup))));
+  console.log(`[prerender] OK (SSR) — dist/offerta.html creato, ${(fs.statSync(offertaFile).size / 1024).toFixed(1)} KB`);
   fs.rmSync(path.join(root, 'dist-ssr'), { recursive: true, force: true });
   console.log(`[prerender] OK (SSR) — dist/index.html aggiornato, ${(fs.statSync(file).size / 1024).toFixed(1)} KB`);
 }
