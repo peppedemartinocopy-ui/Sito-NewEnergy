@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { Check, CheckCircle2, Loader2 } from 'lucide-react';
-import { trackFormSubmit } from '@/lib/analytics';
+import { Check, CheckCircle2, Loader2, MessageCircle, Send } from 'lucide-react';
+import { trackFormSubmit, trackWhatsAppClick } from '@/lib/analytics';
+import { WHATSAPP_HREF } from '@/lib/whatsapp';
 
-// Landing per la campagna Meta (noindex). Stesso invio del modulo del sito: stesso webhook Make, stessi campi base,
-// stesso evento Lead (Pixel solo dopo il consenso, vedi index.html). Il campo "source" la distingue dal sito.
-
-const WEBHOOK = 'https://hook.eu1.make.com/qe5owsa7ecyzv7qjjl2mhwt4qx4bh1nz';
+// Landing per la campagna Meta (noindex). Il modulo è copiato identico da src/components/Contact.tsx del sito:
+// stessi campi, stesso payload (source 'website_newenergy'), stesso webhook Make, stesso evento Lead.
 
 const REVIEWS = [
   { n: '15', h: 381 }, { n: '16', h: 315 }, { n: '17', h: 273 }, { n: '01', h: 372 },
@@ -36,112 +35,239 @@ const GARANZIE = [
 const h2 = 'font-display font-bold text-[clamp(30px,4.2vw,46px)] leading-[1.08] tracking-[-0.03em]';
 const wrap = 'max-w-[1040px] mx-auto';
 
+const COMUNI = [
+  'Napoli', 'Pozzuoli', 'Bacoli', 'Giugliano', 'Caserta', 'Aversa',
+  'Avellino', 'Salerno', 'Benevento', 'Casoria', 'Ercolano', 'Torre del Greco',
+  'Marano', 'Quarto', 'Ischia', 'Sorrento', 'Altro comune in Campania',
+];
+
+const TIPI = [
+  'Casa / residenziale',
+  'Pergolato fotovoltaico',
+  'Aggiunta batterie di accumulo',
+  'Colonnina di ricarica',
+  'Manutenzione / assistenza',
+  'Non lo so ancora',
+];
+
+const TEMPISTICHE = [
+  { value: 'subito', label: 'Subito' },
+  { value: '1-3-mesi', label: '1-3 mesi' },
+  { value: 'sto-valutando', label: 'Sto valutando' },
+];
+
+// "Come ci hai trovato?": serve a capire da dove arrivano i lead davvero, oltre ai dati degli annunci.
+const PROVENIENZE = [
+  { value: 'facebook-instagram', label: 'Facebook / Instagram' },
+  { value: 'intelligenza-artificiale', label: 'Intelligenza Artificiale (ChatGPT, Gemini, Claude, Grok ecc.)' },
+  { value: 'ricerca-google', label: 'Ricerca Google' },
+];
+
+type Status = 'idle' | 'loading' | 'success' | 'error';
+
+// Legge i parametri di tracciamento (UTM + gclid) dalla query string corrente.
+// Se un parametro non è presente, restituisce stringa vuota.
 function getTrackingParams() {
   const params = new URLSearchParams(window.location.search);
   return {
     utm_source: params.get('utm_source') ?? '',
     utm_medium: params.get('utm_medium') ?? '',
     utm_campaign: params.get('utm_campaign') ?? '',
-    utm_content: params.get('utm_content') ?? '',
     gclid: params.get('gclid') ?? '',
-    fbclid: params.get('fbclid') ?? '',
   };
 }
 
+const inputCls =
+  'w-full px-4 py-3 rounded-xl border border-ink-900/12 bg-white text-ink-900 placeholder:text-ink-700/40 focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 outline-none transition-all text-base';
+
+function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
+  return (
+    <label className="block">
+      <span className="block text-sm font-medium text-ink-800 mb-1">
+        {label} {required && <span className="text-brand-green-dark">*</span>}
+      </span>
+      {children}
+    </label>
+  );
+}
+
 function LeadForm() {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<Status>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+  // Anti-spam: istante in cui il modulo è stato aperto (i bot lo compilano in un attimo).
   const openedAt = useRef(Date.now());
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('loading');
+    setErrorMsg('');
+
     const form = e.currentTarget;
-    const fd = new FormData(form);
-    // Campo trappola anti-bot: se è pieno, finta conferma e nessun invio.
-    if (String(fd.get('sito_web') ?? '').trim() !== '') {
+    const formData = new FormData(form);
+    // Campo trappola: un utente vero non lo vede e non lo compila. Se è pieno è un bot: finta conferma, nessun invio.
+    if (String(formData.get('sito_web') ?? '').trim() !== '') {
       setStatus('success');
       form.reset();
       return;
     }
-    fd.delete('sito_web');
+    formData.delete('sito_web');
+    // Le chiavi partono tutte vuote: un campo facoltativo lasciato in bianco arriva comunque, come stringa vuota.
     const payload = {
       nome: '', telefono: '', email: '', comune: '', tipo: '', tempistica: '', provenienza: '', messaggio: '',
-      ...Object.fromEntries(fd.entries()),
+      ...Object.fromEntries(formData.entries()),
     };
+
     try {
-      const res = await fetch(WEBHOOK, {
+      const res = await fetch('https://hook.eu1.make.com/qe5owsa7ecyzv7qjjl2mhwt4qx4bh1nz', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...payload,
-          provenienza: 'facebook-instagram',
-          source: 'landing_meta',
+          source: 'website_newenergy',
           submittedAt: new Date().toISOString(),
           fillMs: Date.now() - openedAt.current,
           pageUrl: window.location.href,
           ...getTrackingParams(),
         }),
       });
+
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      trackFormSubmit('facebook-instagram');
+
+      trackFormSubmit(String(payload.provenienza || ''));
       setStatus('success');
       form.reset();
     } catch {
       setStatus('error');
+      setErrorMsg('Non siamo riusciti a inviare la richiesta. Riprova o scrivici su WhatsApp.');
     }
   };
 
-  const field = 'w-full min-h-[44px] box-border rounded-lg border border-white/25 bg-[#16291c] px-4 py-3.5 text-[17px] text-white placeholder:text-white/45 outline-none focus:border-brand-green-light';
 
   if (status === 'success') {
     return (
-      <div className="py-10 text-center text-white">
-        <CheckCircle2 className="w-14 h-14 mx-auto text-brand-green-light" />
-        <h3 className="mt-4 font-display font-bold text-2xl">Richiesta ricevuta.</h3>
-        <p className="mt-3 text-white/80">Ti richiamiamo entro 24 ore per parlare del tuo impianto.</p>
+      <div className="py-12 text-center">
+        <div className="grid place-items-center w-16 h-16 rounded-full bg-brand-green/15 text-brand-green-dark mx-auto">
+          <CheckCircle2 className="w-9 h-9" />
+        </div>
+        <h3 className="mt-5 font-display font-bold text-2xl text-ink-900">Grazie! Abbiamo ricevuto la tua richiesta.</h3>
+        <p className="mt-3 text-ink-700/80 max-w-md mx-auto">
+          Ti ricontatteremo entro 24 ore per parlare del tuo impianto.
+        </p>
+        <a
+          href={WHATSAPP_HREF}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => trackWhatsAppClick('contact_success')}
+          className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-green text-white font-semibold hover:bg-[#356a19] transition-all"
+        >
+          <MessageCircle className="w-4 h-4" /> Scrivici ora su WhatsApp
+        </a>
+        <button
+          type="button"
+          onClick={() => setStatus('idle')}
+          className="mt-3 block mx-auto text-sm text-ink-700/60 hover:text-ink-900 underline"
+        >
+          Invia un'altra richiesta
+        </button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-[18px]">
-      <div aria-hidden="true" className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden">
-        <label>Sito web<input type="text" name="sito_web" tabIndex={-1} autoComplete="off" /></label>
-      </div>
-      <label className="flex flex-col gap-[7px]">
-        <span className="text-[15px] font-semibold text-[#E9EFE6]">Nome e cognome</span>
-        <input type="text" name="nome" required autoComplete="name" className={field} />
-      </label>
-      <label className="flex flex-col gap-[7px]">
-        <span className="text-[15px] font-semibold text-[#E9EFE6]">Telefono</span>
-        <input type="tel" name="telefono" required autoComplete="tel" className={field} />
-      </label>
-      <label className="flex flex-col gap-[7px]">
-        <span className="text-[15px] font-semibold text-[#E9EFE6]">Email</span>
-        <input type="email" name="email" autoComplete="email" className={field} />
-      </label>
-      <label className="flex items-start gap-3 text-[13px] leading-relaxed text-white/75">
-        <input type="checkbox" required className="mt-1 accent-brand-green" />
-        <span>
-          Ho letto e accetto l'
-          <a href="/privacy.html" target="_blank" rel="noopener noreferrer" className="underline">informativa sulla privacy</a>
-          . Autorizzo New Energy a trattare i miei dati per essere ricontattato. (Richiesto)
-        </span>
-      </label>
-      {status === 'error' && (
-        <p className="rounded-lg border border-red-300/40 bg-red-500/10 p-3 text-sm text-red-200">
-          Non siamo riusciti a inviare la richiesta. Riprova tra un attimo.
-        </p>
-      )}
-      <button
-        type="submit"
-        disabled={status === 'loading'}
-        className="inline-flex items-center justify-center gap-2 h-14 rounded-[10px] bg-brand-green text-white text-lg font-bold shadow-[0_0_40px_rgba(110,175,60,0.45)] hover:bg-[#356a19] transition-colors disabled:opacity-60"
-      >
-        {status === 'loading' ? <><Loader2 className="w-5 h-5 animate-spin" /> Invio in corso…</> : 'Richiedi un preventivo'}
-      </button>
-      <p className="text-center text-sm text-white/60">Ti richiamiamo entro 24 ore, senza impegno.</p>
-    </form>
+      <form id="form-lead" onSubmit={handleSubmit} className="space-y-3">
+        <div aria-hidden="true" className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden">
+          <label>
+            Sito web
+            <input type="text" name="sito_web" tabIndex={-1} autoComplete="off" />
+          </label>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <Field label="Nome e cognome" required>
+            <input type="text" name="nome" required placeholder="Mario Rossi"
+              className={inputCls} />
+          </Field>
+          <Field label="Telefono" required>
+            <input type="tel" name="telefono" required placeholder="333 1234567"
+              className={inputCls} />
+          </Field>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <Field label="Email">
+            <input type="email" name="email" placeholder="mario@email.it"
+              className={inputCls} />
+          </Field>
+          <Field label="Comune" required>
+            <select name="comune" required defaultValue="" className={inputCls}>
+              <option value="" disabled>Seleziona…</option>
+              {COMUNI.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </Field>
+        </div>
+        <Field label="Cosa ti serve?">
+          <select name="tipo" defaultValue="" className={inputCls}>
+            <option value="">Seleziona…</option>
+            {TIPI.map((t) => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </Field>
+        <Field label="Quando vorresti installare?">
+          <div className="flex flex-wrap gap-2">
+            {TEMPISTICHE.map((t) => (
+              <label key={t.value} className="cursor-pointer">
+                <input type="radio" name="tempistica" value={t.value} className="peer sr-only" />
+                <span className="inline-flex items-center px-4 py-2.5 rounded-xl border border-ink-900/12 bg-white text-sm font-medium text-ink-800 peer-checked:bg-brand-green peer-checked:text-white peer-checked:border-brand-green peer-focus-visible:ring-2 peer-focus-visible:ring-brand-green/30 transition-all">
+                  {t.label}
+                </span>
+              </label>
+            ))}
+          </div>
+        </Field>
+        <Field label="Come ci hai trovato?">
+          <div className="flex flex-wrap gap-2">
+            {PROVENIENZE.map((t) => (
+              <label key={t.value} className="cursor-pointer">
+                <input type="radio" name="provenienza" value={t.value} className="peer sr-only" />
+                <span className="inline-flex items-center px-4 py-2.5 rounded-xl border border-ink-900/12 bg-white text-sm font-medium text-ink-800 peer-checked:bg-brand-green peer-checked:text-white peer-checked:border-brand-green peer-focus-visible:ring-2 peer-focus-visible:ring-brand-green/30 transition-all">
+                  {t.label}
+                </span>
+              </label>
+            ))}
+          </div>
+        </Field>
+        <Field label="Messaggio (opzionale)">
+          <textarea name="messaggio" rows={3} placeholder="Es. ho un tetto a spioventi di circa 80 mq"
+            className={inputCls} />
+        </Field>
+
+        <label className="flex items-start gap-3 text-xs text-ink-700/70 leading-relaxed">
+          <input type="checkbox" required className="mt-0.5 accent-brand-green" />
+          <span>
+            Ho letto e accetto l'
+            <a href="/privacy.html" target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-green transition-colors">
+              informativa sulla privacy
+            </a>
+            . Autorizzo New Energy a trattare i miei dati per essere ricontattato. (Richiesto)
+          </span>
+        </label>
+
+        {status === 'error' && (
+          <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
+            {errorMsg}
+          </p>
+        )}
+
+        <button
+          type="submit"
+          disabled={status === 'loading'}
+          className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-brand-green text-white text-[17px] font-bold hover:bg-[#356a19] transition-all disabled:opacity-60"
+        >
+          {status === 'loading' ? (
+            <><Loader2 className="w-4 h-4 animate-spin" /> Invio in corso…</>
+          ) : (
+            <>Richiedi il tuo preventivo <Send className="w-4 h-4" /></>
+          )}
+        </button>
+        <p className="text-center text-sm text-ink-700/70">Senza impegno e senza pressioni commerciali.</p>
+      </form>
   );
 }
 
@@ -333,7 +459,7 @@ export default function OffertaPage() {
                 Se sei davvero intenzionato e non vuoi perdere il 50%, compila il modulo. Ti richiamiamo entro 24 ore, senza impegno.
               </p>
             </div>
-            <div className="relative flex-[1_1_400px] min-w-0 rounded-3xl bg-ink-900 p-[34px] shadow-[0_24px_60px_rgba(15,28,20,0.25)]">
+            <div className="relative flex-[1_1_400px] min-w-0 bg-white rounded-3xl p-5 sm:p-8 shadow-[0_24px_60px_rgba(15,28,20,0.18)]">
               <LeadForm />
             </div>
           </div>
