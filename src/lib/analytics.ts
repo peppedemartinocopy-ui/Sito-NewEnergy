@@ -29,8 +29,12 @@ export function trackWhatsAppClick(context: string) {
   trackEvent('whatsapp_click', { event_category: 'contact', event_label: context });
 }
 
-export function trackFormSubmit() {
-  trackEvent('generate_lead', { event_category: 'form', event_label: 'lead_form_submit' });
+export function trackFormSubmit(leadSource: string = '') {
+  trackEvent('generate_lead', {
+    event_category: 'form',
+    event_label: 'lead_form_submit',
+    lead_source: leadSource || 'non_indicato',
+  });
 }
 
 export function trackScrollToSection(section: string) {

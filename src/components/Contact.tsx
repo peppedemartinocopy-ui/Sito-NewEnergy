@@ -27,6 +27,13 @@ const TEMPISTICHE = [
   { value: 'sto-valutando', label: 'Sto valutando' },
 ];
 
+// "Come ci hai trovato?": serve a capire da dove arrivano i lead davvero, oltre ai dati degli annunci.
+const PROVENIENZE = [
+  { value: 'facebook-instagram', label: 'Facebook / Instagram' },
+  { value: 'intelligenza-artificiale', label: 'Intelligenza Artificiale (ChatGPT, Gemini, Claude, Grok ecc.)' },
+  { value: 'ricerca-google', label: 'Ricerca Google' },
+];
+
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
 // Legge i parametri di tracciamento (UTM + gclid) dalla query string corrente.
@@ -63,7 +70,7 @@ export function Contact() {
     formData.delete('sito_web');
     // Le chiavi partono tutte vuote: un campo facoltativo lasciato in bianco arriva comunque, come stringa vuota.
     const payload = {
-      nome: '', telefono: '', email: '', comune: '', tipo: '', tempistica: '', messaggio: '',
+      nome: '', telefono: '', email: '', comune: '', tipo: '', tempistica: '', provenienza: '', messaggio: '',
       ...Object.fromEntries(formData.entries()),
     };
 
@@ -83,7 +90,7 @@ export function Contact() {
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      trackFormSubmit();
+      trackFormSubmit(String(payload.provenienza || ''));
       setStatus('success');
       form.reset();
     } catch {
@@ -184,6 +191,18 @@ export function Contact() {
                       {TEMPISTICHE.map((t) => (
                         <label key={t.value} className="cursor-pointer">
                           <input type="radio" name="tempistica" value={t.value} className="peer sr-only" />
+                          <span className="inline-flex items-center px-4 py-2.5 rounded-xl border border-ink-900/12 bg-white text-sm font-medium text-ink-800 peer-checked:bg-brand-green peer-checked:text-white peer-checked:border-brand-green peer-focus-visible:ring-2 peer-focus-visible:ring-brand-green/30 transition-all">
+                            {t.label}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </Field>
+                  <Field label="Come ci hai trovato?">
+                    <div className="flex flex-wrap gap-2">
+                      {PROVENIENZE.map((t) => (
+                        <label key={t.value} className="cursor-pointer">
+                          <input type="radio" name="provenienza" value={t.value} className="peer sr-only" />
                           <span className="inline-flex items-center px-4 py-2.5 rounded-xl border border-ink-900/12 bg-white text-sm font-medium text-ink-800 peer-checked:bg-brand-green peer-checked:text-white peer-checked:border-brand-green peer-focus-visible:ring-2 peer-focus-visible:ring-brand-green/30 transition-all">
                             {t.label}
                           </span>
