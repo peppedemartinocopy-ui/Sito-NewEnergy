@@ -8,11 +8,24 @@ const ADS_LABELS: Record<string, string> = {
   whatsapp_click: 'CHVXCPfFip0dEL355O9B',
 };
 
+// Eventi standard Meta corrispondenti (Pixel ID 2067499853497440)
+const META_EVENTS: Record<string, string> = {
+  generate_lead: 'Lead',
+  phone_call: 'Contact',
+  whatsapp_click: 'Contact',
+};
+
 export function trackEvent(
   eventName: string,
   params: Record<string, unknown> = {},
 ): void {
-  const w = window as Window & { gtag?: (...args: unknown[]) => void };
+  const w = window as Window & {
+    gtag?: (...args: unknown[]) => void;
+    fbq?: (...args: unknown[]) => void;
+  };
+  // Meta Pixel: esiste solo dopo il consenso (vedi index.html)
+  const metaEvent = META_EVENTS[eventName];
+  if (metaEvent && typeof w.fbq === 'function') w.fbq('track', metaEvent);
   if (typeof w.gtag !== 'function') return;
   w.gtag('event', eventName, params);
   const label = ADS_LABELS[eventName];
