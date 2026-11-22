@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
+    <title>New Energy | Preventivo impianto fotovoltaico</title>
+    <meta name="description" content="Preventivo per il tuo impianto fotovoltaico, direttamente dai tecnici di New Energy.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap">
+    <link rel="preload" as="image" href="/images/hero-v2.webp" imagesrcset="/images/hero-v2-720.webp 720w, /images/hero-v2.webp 1080w" imagesizes="(min-width: 1040px) 500px, 100vw" fetchpriority="high">
+    <!-- Google Analytics 4 (Consent Mode: nessun cookie di analisi finché l'utente non accetta dal banner) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XBNYY8RQ4N"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      var storedConsent = 'denied';
+      try { storedConsent = localStorage.getItem('cookie_consent') === 'granted' ? 'granted' : 'denied'; } catch (e) {}
+      gtag('consent', 'default', {
+        'analytics_storage': storedConsent,
+        'ad_storage': storedConsent,
+        'ad_user_data': storedConsent,
+        'ad_personalization': storedConsent
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-XBNYY8RQ4N');
+      gtag('config', 'AW-17682742461');
+    </script>
+
+    <!-- Meta Pixel: parte solo dopo il consenso (nessuna richiesta a facebook.com prima) -->
+    <script>
+      function loadMetaPixel() {
+        if (window.fbq) return;
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+        (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init','2067499853497440');
+        fbq('track','PageView');
+      }
+      if (storedConsent === 'granted') loadMetaPixel();
+    </script>
+
+    <!-- Banner cookie: decide prima del primo disegno se mostrarlo (solo se non c'è una scelta salvata) -->
+    <script>
+      (function () {
+        var c = null;
+        try { c = localStorage.getItem('cookie_consent'); } catch (e) {}
+        if (c !== 'granted' && c !== 'denied') document.documentElement.setAttribute('data-cc', 'ask');
+        else document.documentElement.removeAttribute('data-cc');
+      })();
+    </script>
+
+  </head>
+  <body>
+    <div id="cookie-banner" class="fixed inset-x-0 bottom-0 z-[60] p-2.5 sm:p-5">
+      <div class="max-w-2xl mx-auto bg-ink-900 text-white rounded-xl sm:rounded-2xl shadow-cardhover border border-white/10 px-4 py-3 sm:p-6">
+        <p class="text-[12.5px] leading-snug sm:text-sm sm:leading-relaxed text-white/80">Usiamo Google Analytics per capire come i visitatori usano il sito e cookie di Google e Meta (Facebook/Instagram) per misurare l’efficacia dei nostri annunci. Si attivano solo se acconsenti. <a href="/cookie.html" target="_blank" rel="noopener noreferrer" class="underline hover:text-brand-green transition-colors">Leggi la Cookie Policy</a>.</p>
+        <div class="mt-2.5 sm:mt-4 flex flex-row gap-2 sm:gap-2.5">
+          <button type="button" data-cc-choice="granted" class="touch-manipulation flex-1 inline-flex items-center justify-center px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-brand-green-deep text-white text-sm font-semibold hover:bg-[#356a19] transition-all">Accetta</button>
+          <button type="button" data-cc-choice="denied" class="touch-manipulation flex-1 inline-flex items-center justify-center px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-white/10 text-white text-sm font-semibold hover:bg-white/15 transition-all">Rifiuta</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var b = document.getElementById('cookie-banner');
+        if (!b) return;
+        b.addEventListener('click', function (e) {
+          var t = e.target && e.target.closest ? e.target.closest('[data-cc-choice]') : null;
+          if (!t) return;
+          var v = t.getAttribute('data-cc-choice');
+          b.style.display = 'none';
+          try { localStorage.setItem('cookie_consent', v); } catch (err) {}
+          if (v === 'granted' && typeof window.gtag === 'function') window.gtag('consent', 'update', { analytics_storage: 'granted', ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted' });
+          if (v === 'granted' && typeof window.loadMetaPixel === 'function') window.loadMetaPixel();
+        });
+      })();
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+  </body>
+</html>

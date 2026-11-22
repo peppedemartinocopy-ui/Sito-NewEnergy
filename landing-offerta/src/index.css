@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body { font-family: 'Inter', system-ui, sans-serif; background: #0f1c14; }
+h1, h2, h3 { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+
+/* Banner cookie: visibile solo se non c'è ancora una scelta salvata */
+#cookie-banner { display: none; }
+html[data-cc='ask'] #cookie-banner { display: block; }
