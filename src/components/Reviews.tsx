@@ -83,7 +83,7 @@ export function Reviews() {
         <SectionHeading
           eyebrow="Recensioni verificate"
           title={<>Promettere un buon lavoro <span className="text-gradient-green">è facile.</span></>}
-          subtitle="La differenza si vede quando l’impianto è sul tetto, hai già pagato e ti serve assistenza. Per questo lasciamo la parola a chi ci ha già scelto."
+          subtitle="Il difficile viene dopo: tetti complicati, impianti datati, lavori che altre ditte non vogliono toccare. Da noi succede spesso, e li portiamo a termine. Non devi crederci sulla parola: lasciamo parlare chi ci ha già scelto."
         />
 
         {/* Carosello scrollabile col dito (touch/swipe) */}
