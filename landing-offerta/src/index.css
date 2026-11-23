@@ -9,3 +9,54 @@ h1, h2, h3 { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
 /* Banner cookie: visibile solo se non c'è ancora una scelta salvata */
 #cookie-banner { display: none; }
 html[data-cc='ask'] #cookie-banner { display: block; }
+
+/* Barra marchi che scorre; ferma se l'utente ha ridotto le animazioni */
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-track { display: flex; width: max-content; animation: marquee 26s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+
+/* Effetti "premium": solo CSS, leggeri; spenti se l'utente ha ridotto le animazioni */
+.sec-dark {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 0%, rgba(63,122,31,0.26), rgba(15,28,20,0) 70%),
+    #0f1c14;
+  box-shadow: inset 0 1px 0 rgba(143,191,108,0.22);
+}
+.eyebrow-line { display: inline-flex; align-items: center; gap: 12px; }
+.eyebrow-line::before, .eyebrow-line::after {
+  content: ''; width: 28px; height: 1px;
+  background: linear-gradient(90deg, rgba(143,191,108,0), rgba(143,191,108,0.9));
+}
+.eyebrow-line::after { transform: scaleX(-1); }
+
+.cta-premium {
+  position: relative; overflow: hidden;
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0) 55%);
+  box-shadow: 0 12px 28px -10px rgba(63,122,31,0.7), inset 0 1px 0 rgba(255,255,255,0.22);
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+.cta-premium:hover { transform: translateY(-1px); box-shadow: 0 16px 32px -10px rgba(63,122,31,0.8), inset 0 1px 0 rgba(255,255,255,0.25); }
+.cta-premium:active { transform: translateY(0) scale(0.99); }
+.cta-premium::after {
+  content: ''; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%;
+  background: linear-gradient(100deg, rgba(255,255,255,0), rgba(255,255,255,0.35), rgba(255,255,255,0));
+  transform: skewX(-20deg); animation: sheen 6s ease-in-out infinite; pointer-events: none;
+}
+@keyframes sheen { 0%, 70% { left: -60%; } 100% { left: 130%; } }
+
+.phone-glow { position: relative; }
+.phone-glow::before {
+  content: ''; position: absolute; inset: 8% -18% 4% -18%; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(63,122,31,0.28), rgba(63,122,31,0) 65%);
+}
+.phone-glow > * { position: relative; z-index: 1; }
+
+.soft-box { box-shadow: 0 1px 2px rgba(15,28,20,0.08), 0 14px 30px -16px rgba(15,28,20,0.42); }
+
+/* Comparsa morbida delle sezioni; senza JS o con animazioni ridotte resta tutto visibile */
+html.js .rv { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+html.js .rv.rv-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  html.js .rv { opacity: 1; transform: none; transition: none; }
+  .cta-premium::after { animation: none; display: none; }
+}
