@@ -125,7 +125,7 @@ function LeadForm() {
     };
 
     try {
-      const res = await fetch('https://hook.eu1.make.com/qe5owsa7ecyzv7qjjl2mhwt4qx4bh1nz', {
+      const res = await fetch('https://hook.eu1.make.com/ef142husr8dxld7j5xuis4efvksr58qk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -443,7 +443,7 @@ export default function OffertaPage() {
         </section>
 
         {/* FORM */}
-        <section id="form" className={`${sec} bg-[#F4F9EE] scroll-mt-16 text-ink-900`}>
+        <section className={`${sec} bg-[#F4F9EE] text-ink-900`}>
           <div className={`${wrap} max-w-[1040px] flex flex-wrap items-start gap-7 min-[820px]:gap-12`}>
             <div className="flex-[1_1_400px] min-w-0 flex flex-col gap-3 min-[820px]:gap-5 text-ink-900">
               <h2 className={h2}>Se sei veramente intenzionato ad installare un impianto e non vuoi perdere la detrazione del 50%...</h2>
@@ -471,7 +471,7 @@ export default function OffertaPage() {
                 </figcaption>
               </figure>
             </div>
-            <div className="relative flex-[1_1_400px] min-w-0 bg-white rounded-3xl p-5 sm:p-8 shadow-[0_24px_60px_rgba(15,28,20,0.18)] ring-1 ring-ink-900/5">
+            <div id="form" className="relative scroll-mt-20 flex-[1_1_400px] min-w-0 bg-white rounded-3xl p-5 sm:p-8 shadow-[0_24px_60px_rgba(15,28,20,0.18)] ring-1 ring-ink-900/5">
               <LeadForm />
             </div>
           </div>
