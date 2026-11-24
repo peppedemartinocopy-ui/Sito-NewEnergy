@@ -151,7 +151,7 @@ export function Contact() {
                   </button>
                 </div>
               ) : (
-                <form id="form-lead" onSubmit={handleSubmit} className="space-y-3">
+                <form id="form-lead" data-clarity-mask="True" onSubmit={handleSubmit} className="space-y-3">
                   <div aria-hidden="true" className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden">
                     <label>
                       Sito web
