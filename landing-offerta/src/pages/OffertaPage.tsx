@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { CalendarClock, CheckCircle2, Clock, Euro, FileText, Loader2, MessageCircle, Send, type LucideIcon } from 'lucide-react';
-import { trackFormSubmit, trackWhatsAppClick } from '@/lib/analytics';
+import { ArrowRight, CalendarClock, CheckCircle2, Clock, Euro, FileText, Loader2, MessageCircle, Send, ShieldCheck, Star, type LucideIcon } from 'lucide-react';
+import { trackEvent, trackFormSubmit, trackWhatsAppClick } from '@/lib/analytics';
 import { WHATSAPP_HREF } from '@/lib/whatsapp';
 import { ReviewsCarousel } from '@/components/ReviewsCarousel';
 import { BrandsMarquee } from '@/components/BrandsMarquee';
@@ -13,6 +13,13 @@ const NEL_PREVENTIVO: { icon: LucideIcon; testo: string }[] = [
   { icon: Euro, testo: "Quanto risparmierai dopo aver installato l'impianto e quanto tempo ci metterai per recuperare l'investimento." },
   { icon: FileText, testo: 'Tutti i componenti che installeremo sul tuo tetto, spiegati nella relazione tecnica: non saltiamo niente.' },
   { icon: Clock, testo: 'Quando ti consegniamo i materiali e quando installiamo: entro 15 giorni dalla firma del contratto.' },
+  { icon: ShieldCheck, testo: 'Garanzia su ogni componente, non solo sui pannelli: moduli, inverter, accumulo, quadri elettrici, strutture di fissaggio. Tutto scritto nel preventivo.' },
+];
+
+const PASSI_HERO = [
+  'Dicci che tipo di tetto hai e cosa vuoi ottenere, adesso o in futuro',
+  'Mostraci quanto stai spendendo in energia',
+  'Ricevi una proposta completa: componenti, risparmio e tempi di rientro',
 ];
 
 // Sezioni: la successiva si sovrappone con gli angoli arrotondati, così non c'è il taglio netto tra scuro e chiaro.
@@ -42,11 +49,8 @@ function giorniAllaScadenza() {
 const h2 = 'font-display font-bold text-[24px] min-[820px]:text-[clamp(30px,4.2vw,46px)] leading-[1.12] min-[820px]:leading-[1.08] tracking-[-0.03em]';
 const wrap = 'max-w-[1040px] mx-auto';
 
-const COMUNI = [
-  'Napoli', 'Pozzuoli', 'Bacoli', 'Giugliano', 'Caserta', 'Aversa',
-  'Avellino', 'Salerno', 'Benevento', 'Casoria', 'Ercolano', 'Torre del Greco',
-  'Marano', 'Quarto', 'Ischia', 'Sorrento', 'Altro comune in Campania',
-];
+// Province della Campania, in ordine alfabetico.
+const PROVINCE = ['Avellino', 'Benevento', 'Caserta', 'Napoli', 'Salerno'];
 
 const TIPI = [
   'Casa / residenziale',
@@ -84,6 +88,38 @@ function getTrackingParams() {
   };
 }
 
+// ---- Conversions API: dati che servono a Make per inviare "Lead" a Meta dal server ----
+function leggiCookie(nome: string): string {
+  const m = document.cookie.match(new RegExp('(?:^|; )' + nome + '=([^;]*)'));
+  return m ? decodeURIComponent(m[1]) : '';
+}
+
+function consensoMarketing(): boolean {
+  try { return localStorage.getItem('cookie_consent') === 'granted'; } catch { return false; }
+}
+
+// Telefono in formato internazionale solo cifre (es. 393331234567), come richiede Meta prima dell'hash.
+function telefonoNormalizzato(raw: string): string {
+  let d = raw.replace(/[^\d+]/g, '');
+  if (d.startsWith('+')) d = d.slice(1);
+  else if (d.startsWith('00')) d = d.slice(2);
+  else if (d.startsWith('3') && d.length >= 9 && d.length <= 10) d = '39' + d; // cellulare italiano senza prefisso
+  return d.replace(/\D/g, '');
+}
+
+async function sha256Hex(testo: string): Promise<string> {
+  try {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(testo));
+    return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('');
+  } catch {
+    return '';
+  }
+}
+
+function nuovoEventId(): string {
+  try { return crypto.randomUUID(); } catch { return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`; }
+}
+
 const inputCls =
   'w-full px-4 py-3 rounded-xl border border-ink-900/12 bg-white text-ink-900 placeholder:text-ink-700/40 focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 outline-none transition-all text-base';
 
@@ -103,6 +139,10 @@ function LeadForm() {
   const [errorMsg, setErrorMsg] = useState('');
   // Anti-spam: istante in cui il modulo è stato aperto (i bot lo compilano in un attimo).
   const openedAt = useRef(Date.now());
+  // Filtro di qualifica: domanda dentro il modulo. Con "No" il modulo si nasconde (i dati scritti restano) e compare l'avviso.
+  const [inCampania, setInCampania] = useState<boolean | null>(null);
+  // Nuvoletta "controlla il numero": visibile mentre il campo telefono è in uso.
+  const [telFocus, setTelFocus] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -118,10 +158,29 @@ function LeadForm() {
       return;
     }
     formData.delete('sito_web');
+    formData.delete('abita_campania');
     // Le chiavi partono tutte vuote: un campo facoltativo lasciato in bianco arriva comunque, come stringa vuota.
     const payload = {
-      nome: '', telefono: '', email: '', comune: '', tipo: '', tempistica: '', provenienza: '', messaggio: '',
+      nome: '', telefono: '', email: '', provincia: '', tipo: '', tempistica: '', provenienza: '', messaggio: '',
       ...Object.fromEntries(formData.entries()),
+    };
+
+    // CAPI: gli identificativi del browser si inviano solo se l'utente ha accettato i cookie di marketing.
+    const eventId = nuovoEventId();
+    const consenso = consensoMarketing();
+    const fbclid = new URLSearchParams(window.location.search).get('fbclid') ?? '';
+    const telNorm = telefonoNormalizzato(String(payload.telefono || ''));
+    const capi = {
+      event_id: eventId,
+      event_time: Math.floor(Date.now() / 1000),
+      consenso_marketing: consenso ? 'si' : 'no',
+      telefono_norm: telNorm,
+      telefono_sha256: consenso && telNorm ? await sha256Hex(telNorm) : '',
+      email_sha256: consenso && String(payload.email || '').trim() ? await sha256Hex(String(payload.email).trim().toLowerCase()) : '',
+      fbp: consenso ? leggiCookie('_fbp') : '',
+      fbc: consenso ? leggiCookie('_fbc') || (fbclid ? `fb.1.${Date.now()}.${fbclid}` : '') : '',
+      fbclid: consenso ? fbclid : '',
+      user_agent: consenso ? navigator.userAgent : '',
     };
 
     try {
@@ -135,12 +194,13 @@ function LeadForm() {
           fillMs: Date.now() - openedAt.current,
           pageUrl: window.location.href,
           ...getTrackingParams(),
+          ...capi,
         }),
       });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      trackFormSubmit(String(payload.provenienza || ''));
+      trackFormSubmit(String(payload.provenienza || ''), eventId);
       setStatus('success');
       form.reset();
     } catch {
@@ -181,7 +241,46 @@ function LeadForm() {
   }
 
   return (
-      <form id="form-lead" onSubmit={handleSubmit} className="space-y-3">
+    <>
+      {inCampania === false && (
+        <div className="py-6 text-center">
+          <h3 className="font-display font-bold text-[22px] leading-[1.2] tracking-[-0.02em] text-ink-900">Per ora lavoriamo solo in Campania</h3>
+          <p className="mt-3 text-[15px] leading-relaxed text-ink-700/80">
+            Non possiamo seguire impianti fuori regione, quindi non ha senso lasciarci i tuoi dati: ti faremmo perdere solo tempo.
+          </p>
+          <button
+            type="button"
+            onClick={() => setInCampania(true)}
+            className="mt-5 inline-flex items-center justify-center rounded-xl border-2 border-brand-green px-5 py-3 text-[15px] font-bold text-brand-green-dark hover:bg-brand-green hover:text-white transition-colors"
+          >
+            Ho sbagliato, abito in Campania
+          </button>
+        </div>
+      )}
+      <form id="form-lead" data-clarity-mask="true" onSubmit={handleSubmit} className={`space-y-3${inCampania === false ? ' hidden' : ''}`}>
+        <h3 className="font-display font-bold text-[22px] leading-[1.15] tracking-[-0.02em] text-ink-900">Richiedi il tuo preventivo</h3>
+        <fieldset className="rounded-xl border-[1.5px] border-brand-green bg-[#F4F9EE] px-3 pt-1 pb-3">
+          <legend className="px-1 text-sm font-medium text-ink-800">
+            Abiti in Campania? <span className="text-brand-green-dark">*</span>
+          </legend>
+          <div className="grid grid-cols-2 gap-2">
+            {([{ v: true, label: 'Sì' }, { v: false, label: 'No' }] as const).map((o) => (
+              <label key={o.label} className="cursor-pointer">
+                <input
+                  type="radio"
+                  name="abita_campania"
+                  required
+                  checked={inCampania === o.v}
+                  onChange={() => { trackEvent('qualifica_campania', { risposta: o.v ? 'si' : 'no' }); setInCampania(o.v); }}
+                  className="peer sr-only"
+                />
+                <span className="flex h-[46px] items-center justify-center rounded-xl border border-ink-900/20 bg-white text-[16px] font-semibold text-ink-800 transition-colors peer-checked:border-brand-green peer-checked:bg-brand-green peer-checked:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-brand-green/40">
+                  {o.label}
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
         <div aria-hidden="true" className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden">
           <label>
             Sito web
@@ -194,18 +293,38 @@ function LeadForm() {
               className={inputCls} />
           </Field>
           <Field label="Telefono" required>
-            <input type="tel" name="telefono" required placeholder="333 1234567"
-              className={inputCls} />
+            <div className="relative">
+              <input type="tel" name="telefono" required placeholder="333 1234567"
+                inputMode="tel" autoComplete="tel" minLength={9} pattern="[0-9+ .\-]{9,20}"
+                title="Inserisci un numero di telefono valido"
+                aria-describedby="tel-hint"
+                onFocus={() => setTelFocus(true)} onBlur={() => setTelFocus(false)}
+                className={inputCls} />
+              {telFocus && (
+                <div id="tel-hint" role="status" className="absolute left-0 right-0 top-full z-20 mt-2 rounded-lg bg-ink-900 px-3 py-2 text-[13px] leading-snug text-white shadow-lg">
+                  <span className="absolute -top-[5px] left-6 h-2.5 w-2.5 rotate-45 rounded-[2px] bg-ink-900" aria-hidden="true" />
+                  Controlla bene il numero: se è sbagliato non possiamo contattarti.
+                </div>
+              )}
+            </div>
           </Field>
         </div>
-        <Field label="Comune" required>
-          <select name="comune" required defaultValue="" className={inputCls}>
+        <Field label="Email (opzionale)">
+          <input type="email" name="email" autoComplete="email" placeholder="nome@email.it" className={inputCls} />
+        </Field>
+        <Field label="Provincia" required>
+          <select name="provincia" required defaultValue="" className={inputCls}>
             <option value="" disabled>Seleziona…</option>
-            {COMUNI.map((c) => <option key={c} value={c}>{c}</option>)}
+            {PROVINCE.map((p) => <option key={p} value={p}>{p}</option>)}
           </select>
         </Field>
-        {/* Campi precompilati e nascosti: il payload verso Make resta identico a quello del sito. */}
-        <input type="hidden" name="tipo" value={TIPI[0]} />
+        <Field label="Cosa ti serve?">
+          <select name="tipo" defaultValue="" className={inputCls}>
+            <option value="">Seleziona…</option>
+            {TIPI.map((t) => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </Field>
+        {/* Campo precompilato e nascosto: il payload verso Make resta identico a quello del sito. */}
         <input type="hidden" name="provenienza" value={PROVENIENZE[0].value} />
         <Field label="Quando vorresti installare?">
           <div className="flex flex-wrap gap-2">
@@ -253,6 +372,7 @@ function LeadForm() {
         </button>
         <p className="text-center text-sm text-ink-700/70">Senza impegno e senza pressioni commerciali.</p>
       </form>
+    </>
   );
 }
 
@@ -310,32 +430,44 @@ export default function OffertaPage() {
           {/* Mobile: titolo, foto, testo, CTA (colonna con "order"). Da 820px in su: titolo in alto, testo a sinistra e foto a destra come prima. */}
           <div className={`${wrap} grid grid-cols-1 gap-y-6 items-center min-[820px]:grid-cols-2 min-[820px]:gap-x-10 min-[820px]:gap-y-11`}>
             <div className="col-start-1 row-start-1 min-[820px]:col-span-2 mx-auto max-w-[860px] text-center">
-              <p className="eyebrow-line mb-3 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#8FBF6C] min-[820px]:text-sm">Per proprietari di casa</p>
-              <h1 className="font-display font-bold text-[31px] min-[820px]:text-[clamp(38px,6.4vw,66px)] leading-[1.12] min-[820px]:leading-[1.08] tracking-[-0.03em] text-white">
-                Esistono 2 tipi di ditte nel fotovoltaico
+              <p className="eyebrow-line mb-3 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#8FBF6C] min-[820px]:text-sm">Case, villette, pensiline per auto o condomini</p>
+              <h1 className="[text-wrap:balance] font-display font-bold text-[31px] min-[820px]:text-[clamp(38px,6.4vw,66px)] leading-[1.12] min-[820px]:leading-[1.08] tracking-[-0.03em] text-white">
+                Preventivo per il tuo impianto, chiavi in mano.
               </h1>
             </div>
             <div className="col-start-1 row-start-3 min-[820px]:row-start-2 min-[820px]:col-span-1 min-w-0 flex flex-col gap-4 min-[820px]:gap-[22px]">
-              <p className="font-display text-[16px] min-[820px]:text-[clamp(19px,2.6vw,24px)] leading-[1.35] min-[820px]:leading-[1.25] font-medium text-white">
-                Quelle che ti attirano con una super promo e poi ti abbandonano...
-                <br /><br />
-                E quelle che resteranno con te per sempre, come noi di New Energy.
-              </p>
+              <ul className="flex flex-col gap-3 min-[820px]:gap-3.5">
+                {PASSI_HERO.map((passo) => (
+                  <li key={passo} className="flex items-start gap-3 font-display text-[16px] min-[820px]:text-[clamp(19px,2.6vw,24px)] leading-[1.35] min-[820px]:leading-[1.25] font-medium text-white">
+                    <ArrowRight className="mt-[3px] w-5 h-5 min-[820px]:mt-1 min-[820px]:w-6 min-[820px]:h-6 shrink-0 text-[#8FBF6C]" strokeWidth={2.2} aria-hidden="true" />
+                    <span>{passo}</span>
+                  </li>
+                ))}
+              </ul>
               {giorni > 0 && (
                 <div className="flex items-center gap-3 rounded-lg border border-brand-green/60 bg-brand-green/15 px-3.5 py-2.5 text-left">
                   <CalendarClock className="w-5 h-5 shrink-0 text-[#8FBF6C]" aria-hidden="true" />
                   <p className="text-[14px] min-[820px]:text-base leading-snug text-white">
                     <strong className="font-bold">Detrazione del 50% fino al 31 dicembre 2026.</strong>{' '}
                     <span className="text-[#E9EFE6]/80">Mancano {giorni} {giorni === 1 ? 'giorno' : 'giorni'}.</span>
-                    <span className="mt-1 block text-[13px] min-[820px]:text-[15px] text-[#E9EFE6]/80">Puoi bloccare l'offerta prima del 2027 e installare a inizio anno.</span>
                   </p>
                 </div>
               )}
               <div className="flex flex-col items-start gap-2.5 pt-1 min-[820px]:gap-3 min-[820px]:pt-2.5 max-[819px]:items-stretch">
                 <a href="#form" className={`${cta} text-[16px] h-[52px] min-[820px]:text-[clamp(19px,3vw,24px)] min-[820px]:h-[72px] min-[820px]:px-[clamp(28px,5vw,52px)]`}>
-                  Richiedi un preventivo
+                  Richiedi ora
                 </a>
                 <span className="text-[13px] min-[820px]:text-[15px] text-[#E9EFE6]/65 max-[819px]:text-center">Ti richiamiamo in giornata, senza impegno.</span>
+                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 pt-1 text-[13px] min-[820px]:text-[15px] text-[#E9EFE6]/85 max-[819px]:justify-center">
+                  <span className="flex items-center gap-0.5" aria-hidden="true">
+                    {[0, 1, 2, 3, 4].map((i) => (
+                      <Star key={i} className="w-4 h-4 text-brand-orange fill-current" />
+                    ))}
+                  </span>
+                  <span>5 stelle su Google</span>
+                  <span aria-hidden="true" className="text-white/40">·</span>
+                  <span>30+ anni di esperienza</span>
+                </div>
               </div>
             </div>
             <div className="col-start-1 row-start-2 min-[820px]:col-start-2 min-w-0 self-center">
@@ -358,7 +490,7 @@ export default function OffertaPage() {
             <div className="flex flex-col gap-4 max-w-[780px]">
               <h2 className={h2}>Perché i nostri clienti sono pienamente soddisfatti?</h2>
               <p className="text-[15px] min-[820px]:text-[19px] leading-[1.5] text-ink-700">
-                <strong className="font-bold text-ink-900">Non proviamo a vendere l'impianto a tutti i costi.</strong> Se è fattibile e sei convinto, andiamo avanti. Se capiamo che non è il momento giusto, te lo diciamo e non ti spingiamo a firmare.
+                <strong className="font-bold text-ink-900">Non proviamo a vendere l'impianto a tutti i costi.</strong> Se è fattibile e sei convinto, andiamo avanti.
               </p>
               <p className="text-[15px] min-[820px]:text-[19px] leading-[1.5] text-ink-700">
                 <strong className="font-bold text-ink-900">Non ci fermiamo davanti a lavori complessi,</strong> anche dove molte ditte si tirerebbero indietro. Vincoli strutturali, spazi poco adatti, impianti elettrici fatti male da altri: sono lavori che prendiamo, e ci mettiamo il tempo che serve.
@@ -448,25 +580,19 @@ export default function OffertaPage() {
             <div className="flex-[1_1_400px] min-w-0 flex flex-col gap-3 min-[820px]:gap-5 text-ink-900">
               <h2 className={h2}>Se sei veramente intenzionato ad installare un impianto e non vuoi perdere la detrazione del 50%...</h2>
               <p className="font-display font-bold text-[20px] min-[820px]:text-[28px] leading-[1.25] tracking-[-0.02em] text-ink-900">
-                In <span className="text-brand-green">15 giorni</span> puoi già averlo sul tuo tetto.
+                <span className="text-brand-green">Compila il modulo</span> qui sotto.
               </p>
-              <div className="flex items-start gap-3 rounded-lg border border-brand-green/40 bg-brand-green/10 px-3.5 py-3">
-                <CalendarClock className="mt-0.5 w-5 h-5 shrink-0 text-brand-green" aria-hidden="true" />
-                <p className="text-[14px] min-[820px]:text-[17px] leading-snug text-ink-900">
-                  Se invece non sei ancora pronto ma vuoi comunque usufruire della detrazione, puoi preparare tutte le carte e far partire la pratica. Per l'installazione ci accorderemo dopo aver sistemato i documenti.
-                </p>
-              </div>
               <figure className="mt-1 overflow-hidden soft-box rounded-xl border border-ink-900/10 bg-white">
                 <img
                   src="/images/gustavo-titolare.webp"
-                  alt="Gustavo, titolare di New Energy, al lavoro su un impianto"
+                  alt="Gustavo, responsabile tecnico di New Energy, al lavoro su un impianto"
                   width="600"
                   height="800"
                   loading="lazy"
                   className="w-full aspect-[16/10] object-cover object-[50%_18%]"
                 />
                 <figcaption className="px-4 py-3 text-[15px] min-[820px]:text-[17px] leading-snug text-ink-800">
-                  <strong className="font-bold text-ink-900">Il preventivo lo farà Gustavo, il titolare.</strong>{' '}
+                  <strong className="font-bold text-ink-900">Il preventivo lo farà Gustavo, il responsabile tecnico.</strong>{' '}
                   Un solo interlocutore, dal primo contatto all'assistenza.
                 </figcaption>
               </figure>

@@ -47,6 +47,19 @@
       if (storedConsent === 'granted') loadMetaPixel();
     </script>
 
+    <!-- Microsoft Clarity (heatmap e registrazioni): parte solo dopo il consenso. Moduli e campi sono mascherati. -->
+    <script>
+      var CLARITY_ID = 'ziplkjq08x';
+      function loadClarity() {
+        if (window.clarity || !CLARITY_ID || CLARITY_ID.indexOf('__') === 0) return;
+        (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,'clarity','script',CLARITY_ID);
+        window.clarity('consentv2', { ad_Storage: 'granted', analytics_Storage: 'granted' });
+      }
+      if (storedConsent === 'granted') loadClarity();
+    </script>
+
     <!-- Banner cookie: decide prima del primo disegno se mostrarlo (solo se non c'è una scelta salvata) -->
     <script>
       (function () {
@@ -61,7 +74,7 @@
   <body>
     <div id="cookie-banner" class="fixed inset-x-0 bottom-0 z-[60] p-2.5 sm:p-5">
       <div class="max-w-2xl mx-auto bg-ink-900 text-white rounded-xl sm:rounded-2xl shadow-cardhover border border-white/10 px-4 py-3 sm:p-6">
-        <p class="text-[12.5px] leading-snug sm:text-sm sm:leading-relaxed text-white/80">Usiamo Google Analytics per capire come i visitatori usano il sito e cookie di Google e Meta (Facebook/Instagram) per misurare l’efficacia dei nostri annunci. Si attivano solo se acconsenti. <a href="/cookie.html" target="_blank" rel="noopener noreferrer" class="underline hover:text-brand-green transition-colors">Leggi la Cookie Policy</a>.</p>
+        <p class="text-[12.5px] leading-snug sm:text-sm sm:leading-relaxed text-white/80">Usiamo Google Analytics e Microsoft Clarity per capire come i visitatori usano il sito e cookie di Google e Meta (Facebook/Instagram) per misurare l’efficacia dei nostri annunci. Si attivano solo se acconsenti. <a href="/cookie.html" target="_blank" rel="noopener noreferrer" class="underline hover:text-brand-green transition-colors">Leggi la Cookie Policy</a>.</p>
         <div class="mt-2.5 sm:mt-4 flex flex-row gap-2 sm:gap-2.5">
           <button type="button" data-cc-choice="granted" class="touch-manipulation flex-1 inline-flex items-center justify-center px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-brand-green-deep text-white text-sm font-semibold hover:bg-[#356a19] transition-all">Accetta</button>
           <button type="button" data-cc-choice="denied" class="touch-manipulation flex-1 inline-flex items-center justify-center px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-white/10 text-white text-sm font-semibold hover:bg-white/15 transition-all">Rifiuta</button>
@@ -80,6 +93,7 @@
           try { localStorage.setItem('cookie_consent', v); } catch (err) {}
           if (v === 'granted' && typeof window.gtag === 'function') window.gtag('consent', 'update', { analytics_storage: 'granted', ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted' });
           if (v === 'granted' && typeof window.loadMetaPixel === 'function') window.loadMetaPixel();
+          if (v === 'granted' && typeof window.loadClarity === 'function') window.loadClarity();
         });
       })();
     </script>

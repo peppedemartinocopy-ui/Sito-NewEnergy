@@ -18,6 +18,7 @@ const META_EVENTS: Record<string, string> = {
 export function trackEvent(
   eventName: string,
   params: Record<string, unknown> = {},
+  eventId?: string,
 ): void {
   const w = window as Window & {
     gtag?: (...args: unknown[]) => void;
@@ -25,7 +26,11 @@ export function trackEvent(
   };
   // Meta Pixel: esiste solo dopo il consenso (vedi index.html)
   const metaEvent = META_EVENTS[eventName];
-  if (metaEvent && typeof w.fbq === 'function') w.fbq('track', metaEvent);
+  // eventID = stesso valore inviato alla Conversions API dal server: Meta deduplica i due eventi.
+  if (metaEvent && typeof w.fbq === 'function') {
+    if (eventId) w.fbq('track', metaEvent, {}, { eventID: eventId });
+    else w.fbq('track', metaEvent);
+  }
   if (typeof w.gtag !== 'function') return;
   w.gtag('event', eventName, params);
   const label = ADS_LABELS[eventName];
@@ -42,12 +47,12 @@ export function trackWhatsAppClick(context: string) {
   trackEvent('whatsapp_click', { event_category: 'contact', event_label: context });
 }
 
-export function trackFormSubmit(leadSource: string = '') {
+export function trackFormSubmit(leadSource: string = '', eventId?: string) {
   trackEvent('generate_lead', {
     event_category: 'form',
     event_label: 'lead_form_submit',
     lead_source: leadSource || 'non_indicato',
-  });
+  }, eventId);
 }
 
 export function trackScrollToSection(section: string) {

@@ -3,6 +3,8 @@ const BRANDS = [
   { name: 'Huawei', src: '/images/brands/huawei.webp', w: 128, h: 128, cls: 'h-12' },
   { name: 'Viessmann', src: '/images/brands/viessmann.webp', w: 299, h: 72, cls: 'h-7' },
   { name: 'Solplanet', src: '/images/brands/solplanet.webp', w: 282, h: 72, cls: 'h-7' },
+  { name: 'AIKO', src: '/images/brands/aiko.webp', w: 272, h: 72, cls: 'h-7' },
+  { name: 'Tesla', src: '/images/brands/tesla.webp', w: 111, h: 144, cls: 'h-14' },
   { name: 'Afore', src: '/images/brands/afore.webp', w: 298, h: 144, cls: 'h-9' },
   { name: 'Lithium Valley', src: '/images/brands/lithium-valley.webp', w: 297, h: 160, cls: 'h-10' },
 ];
